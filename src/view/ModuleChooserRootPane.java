@@ -5,7 +5,6 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.layout.BorderPane;
 import view.OverviewPane.OverviewPane;
-import view.StudentProfilePane.CreateStudentProfilePane;
 
 
 public class ModuleChooserRootPane extends BorderPane {
