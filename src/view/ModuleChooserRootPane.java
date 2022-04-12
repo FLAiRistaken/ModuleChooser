@@ -5,12 +5,14 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.layout.BorderPane;
 import view.MenuBar.ModuleChooserMenuBar;
+import view.OverviewPane.OverviewPane;
 import view.StudentProfilePane.CreateStudentProfilePane;
 
 
 public class ModuleChooserRootPane extends BorderPane {
 
 	private CreateStudentProfilePane cspp;
+	private OverviewPane ovp;
 	private ModuleChooserMenuBar mstmb;
 	private TabPane tp;
 	
@@ -21,12 +23,14 @@ public class ModuleChooserRootPane extends BorderPane {
 		
 		//create panes
 		cspp = new CreateStudentProfilePane();
+		ovp = new OverviewPane();
 		
 		//create tabs with panes added
 		Tab t1 = new Tab("Create Profile", cspp);
+		Tab t2 = new Tab("Overview", ovp);
 		
 		//add tabs to tab pane
-		tp.getTabs().addAll(t1);
+		tp.getTabs().addAll(t1,t2);
 		
 		//create menu bar
 		mstmb = new ModuleChooserMenuBar();
