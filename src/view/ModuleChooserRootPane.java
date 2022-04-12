@@ -4,7 +4,6 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.layout.BorderPane;
-import view.MenuBar.ModuleChooserMenuBar;
 import view.OverviewPane.OverviewPane;
 import view.StudentProfilePane.CreateStudentProfilePane;
 

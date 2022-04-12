@@ -1,77 +1,58 @@
 package view.OverviewPane;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.geometry.Insets;
-import javafx.scene.layout.Priority;
-
 
 public class OverviewPane extends GridPane {
 
-        private ResultsPane profilepane;
-        private ResultsPane selectedmodulespane;
-        private ResultsPane reservemodulespane;
-        private OverviewButtonPane bp;
+    private TextArea profile;
+    private TextArea selected;
+    private TextArea reserve;
+    private Button btnSave;
 
-        public OverviewPane(){
+    public OverviewPane(){
+
+        this.setVgap(20);
+        this.setPadding(new Insets(20));
+        this.setAlignment(Pos.CENTER);
 
 
-                profilepane = new ResultsPane();
-                selectedmodulespane = new ResultsPane();
-                reservemodulespane = new ResultsPane();
-                bp = new OverviewButtonPane();
 
-                profilepane.setAlignment(Pos.CENTER);
-                profilepane.setPrefSize(600, 100);
-                profilepane.getResultsPane().setText("Student profile will appear here when created...");
+        profile = new TextArea("Student profile will appear here when created...");
+        selected = new TextArea("Selected modules will show here when selected...");
+        reserve = new TextArea("Reserve modules will show here when selected...");
+        btnSave = new Button("Save overview");
 
-             //   selectedmodulespane.setAlignment(Pos.CENTER);
-                selectedmodulespane.setPrefSize(225, 200);
-                selectedmodulespane.getResultsPane().setText("Selected modules will show here when selected...");
+        profile.setPrefSize(600, 100);
+        profile.setEditable(false);
 
-               // reservemodulespane.setAlignment(Pos.CENTER);
-                reservemodulespane.setPrefSize(225, 200);
-                reservemodulespane.getResultsPane().setText("Reserve modules will show here when selected...");
+        selected.setPrefSize(300, 200);
+        selected.setEditable(false);
 
-                bp.setAlignment(Pos.CENTER);
+        reserve.setPrefSize(300, 200);
+        reserve.setEditable(false);
 
-                VBox pvbox = new VBox(profilepane);
-                HBox hbox = new HBox(selectedmodulespane, reservemodulespane);
-                VBox vbox = new VBox(pvbox, hbox, bp);
-                hbox.setAlignment(Pos.CENTER);
-                hbox.setSpacing(30);
-                vbox.setSpacing(40);
-                vbox.setPadding(new Insets(20));
-                vbox.setMaxSize(100000,100000);
+        VBox vbox = new VBox(profile);
+        HBox hbox = new HBox(selected, reserve);
+        HBox hboxbtn = new HBox(btnSave);
 
-                VBox.setVgrow(profilepane, Priority.ALWAYS);
-                HBox.setHgrow(profilepane, Priority.ALWAYS);
-                VBox.setVgrow(selectedmodulespane, Priority.ALWAYS);
-                HBox.setHgrow(selectedmodulespane, Priority.ALWAYS);
-                VBox.setVgrow(reservemodulespane, Priority.ALWAYS);
-                HBox.setHgrow(reservemodulespane, Priority.ALWAYS);
+        vbox.setAlignment(Pos.CENTER);
 
-                this.getChildren().add(vbox);
+        hbox.setAlignment(Pos.CENTER);
+        hbox.setSpacing(40);
 
-        }
+        hboxbtn.setAlignment(Pos.CENTER);
 
-        public ResultsPane getProfilePane(){
-                return profilepane;
-        }
+        this.add(vbox, 0, 1);
+        this.add(hbox, 0, 2);
+        this.add(hboxbtn, 0, 3);
 
-        public ResultsPane getSelectedmodulesPane(){
-                return selectedmodulespane;
-        }
 
-        public ResultsPane getReservemodulesPane(){
-                return reservemodulespane;
-        }
 
-        public OverviewButtonPane getButtonPane(){
-                return bp;
-        }
-
+    }
 }
