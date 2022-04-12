@@ -1,4 +1,4 @@
-package view.StudentProfilePane;
+package view;
 
 import java.time.LocalDate;
 

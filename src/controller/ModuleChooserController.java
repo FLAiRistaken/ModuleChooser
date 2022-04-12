@@ -7,7 +7,7 @@ import model.Schedule;
 import model.Module;
 import model.StudentProfile;
 import view.ModuleChooserRootPane;
-import view.StudentProfilePane.CreateStudentProfilePane;
+import view.CreateStudentProfilePane;
 import view.ModuleChooserMenuBar;
 
 public class ModuleChooserController {
