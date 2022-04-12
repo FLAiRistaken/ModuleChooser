@@ -8,7 +8,7 @@ import model.Module;
 import model.StudentProfile;
 import view.ModuleChooserRootPane;
 import view.StudentProfilePane.CreateStudentProfilePane;
-import view.MenuBar.ModuleChooserMenuBar;
+import view.ModuleChooserMenuBar;
 
 public class ModuleChooserController {
 
