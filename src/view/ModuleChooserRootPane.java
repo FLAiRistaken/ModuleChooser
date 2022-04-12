@@ -27,10 +27,12 @@ public class ModuleChooserRootPane extends BorderPane {
 		
 		//create tabs with panes added
 		Tab t1 = new Tab("Create Profile", cspp);
-		Tab t2 = new Tab("Overview", ovp);
+		Tab t2 = new Tab("Select Modules");
+		Tab t3 = new Tab("Reserve Modules");
+		Tab t4 = new Tab("Overview", ovp);
 		
 		//add tabs to tab pane
-		tp.getTabs().addAll(t1,t2);
+		tp.getTabs().addAll(t1,t2, t3, t4);
 		
 		//create menu bar
 		mstmb = new ModuleChooserMenuBar();

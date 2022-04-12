@@ -3,6 +3,7 @@ package view.OverviewPane;
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
 import javafx.scene.control.TextArea;
+import javafx.geometry.Insets;
 
 public class ResultsPane extends HBox {
 
@@ -11,7 +12,7 @@ public class ResultsPane extends HBox {
     public ResultsPane(){
         results = new TextArea("test");
         results.setId("results");
-        results.setPrefSize(500, 500);
+        results.setPadding(new Insets(0));
 
         this.setAlignment(Pos.CENTER);
         this.getChildren().add(results);
