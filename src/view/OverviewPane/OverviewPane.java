@@ -26,12 +26,15 @@ public class OverviewPane extends GridPane {
 
                 profilepane.setAlignment(Pos.CENTER);
                 profilepane.setPrefSize(600, 100);
+                profilepane.getResultsPane().setText("Student profile will appear here when created...");
 
              //   selectedmodulespane.setAlignment(Pos.CENTER);
                 selectedmodulespane.setPrefSize(225, 200);
+                selectedmodulespane.getResultsPane().setText("Selected modules will show here when selected...");
 
                // reservemodulespane.setAlignment(Pos.CENTER);
                 reservemodulespane.setPrefSize(225, 200);
+                reservemodulespane.getResultsPane().setText("Reserve modules will show here when selected...");
 
                 bp.setAlignment(Pos.CENTER);
 
@@ -42,13 +45,14 @@ public class OverviewPane extends GridPane {
                 hbox.setSpacing(30);
                 vbox.setSpacing(40);
                 vbox.setPadding(new Insets(20));
+                vbox.setMaxSize(100000,100000);
 
-             /* VBox.setVgrow(profilepane, Priority.ALWAYS);
+                VBox.setVgrow(profilepane, Priority.ALWAYS);
                 HBox.setHgrow(profilepane, Priority.ALWAYS);
                 VBox.setVgrow(selectedmodulespane, Priority.ALWAYS);
                 HBox.setHgrow(selectedmodulespane, Priority.ALWAYS);
                 VBox.setVgrow(reservemodulespane, Priority.ALWAYS);
-                HBox.setHgrow(reservemodulespane, Priority.ALWAYS); */
+                HBox.setHgrow(reservemodulespane, Priority.ALWAYS);
 
                 this.getChildren().add(vbox);
 

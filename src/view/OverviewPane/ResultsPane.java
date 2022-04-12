@@ -17,4 +17,8 @@ public class ResultsPane extends HBox {
         this.setAlignment(Pos.CENTER);
         this.getChildren().add(results);
     }
+
+    public TextArea getResultsPane(){
+        return results;
+    }
 }
