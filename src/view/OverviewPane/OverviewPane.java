@@ -3,9 +3,11 @@ package view.OverviewPane;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class OverviewPane extends GridPane {
@@ -14,6 +16,7 @@ public class OverviewPane extends GridPane {
     private TextArea selected;
     private TextArea reserve;
     private Button btnSave;
+    private Label lblTest;
 
     public OverviewPane(){
 
@@ -48,11 +51,32 @@ public class OverviewPane extends GridPane {
 
         hboxbtn.setAlignment(Pos.CENTER);
 
+        vbox.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        hbox.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        profile.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        selected.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        reserve.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+
+        GridPane.setVgrow(vbox, Priority.ALWAYS);
+        GridPane.setHgrow(vbox, Priority.ALWAYS);
+        GridPane.setVgrow(profile, Priority.ALWAYS);
+        GridPane.setHgrow(profile, Priority.ALWAYS);
+
+        GridPane.setVgrow(hbox, Priority.ALWAYS);
+        GridPane.setHgrow(hbox, Priority.ALWAYS);
+        GridPane.setVgrow(selected, Priority.ALWAYS);
+        GridPane.setHgrow(selected, Priority.ALWAYS);
+        GridPane.setVgrow(reserve, Priority.ALWAYS);
+        GridPane.setHgrow(reserve, Priority.ALWAYS);
+
+
+
+
+
+        gridLinesVisibleProperty().set(true);
+
         this.add(vbox, 0, 1);
         this.add(hbox, 0, 2);
         this.add(hboxbtn, 0, 3);
-
-
-
     }
 }
