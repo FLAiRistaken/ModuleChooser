@@ -11,12 +11,12 @@ public class ListViewPane extends VBox {
     private Label lblList;
 
     public ListViewPane(){
-        this.setPadding(new Insets(20));
+        this.setPadding(new Insets(15));
 
         listViewBox = new ListView();
         lblList = new Label();
 
-        listViewBox.setPrefSize(500, 150);
+        listViewBox.setPrefSize(450, 175);
 
         this.getChildren().addAll(lblList, listViewBox);
     }

@@ -8,23 +8,31 @@ import javafx.scene.layout.HBox;
 public class ButtonsPane extends HBox {
 
     private Button add, remove, reset, submit;
+    private Label lblButton;
 
     public ButtonsPane() {
         this.setSpacing(15);
 
+        lblButton = new Label();
         add = new Button("Add");
         remove = new Button("Remove");
-        reset = new Button("Reset");
-        submit = new Button("Submit");
+       // reset = new Button("Reset");
+       // submit = new Button("Submit");
 
         add.setDisable(true);
-        submit.setDisable(true);
+       // submit.setDisable(true);
+        add.setPrefSize(70, 20);
+        remove.setPrefSize(70, 20);
 
 
-        this.getChildren().addAll(add, remove, reset, submit);
+        this.getChildren().addAll(lblButton, add, remove);
 
-        for (Node n : this.getChildren()) {
-            ((Button) n).setPrefSize(120, 20);
-        }
+       /* for (Node n : this.getChildren()) {
+            ((Button) n).setPrefSize(70, 20);
+        }*/
+    }
+
+    public Label getLblButton() {
+        return lblButton;
     }
 }
