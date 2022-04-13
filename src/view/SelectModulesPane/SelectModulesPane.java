@@ -70,6 +70,7 @@ public class SelectModulesPane extends GridPane {
         txtT2Credits = new TextField("0");
 
         selYear.setPrefSize(450, 100);
+        selYear.setMinSize(300, 100);
         selYear.getLblList().setText("Selected Year Long modules");
         selTerm1.getLblList().setText("Selected Term 1 modules");
         selTerm2.getLblList().setText("Selected Term 2 modules");

@@ -5,6 +5,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.layout.BorderPane;
 import view.OverviewPane.OverviewPane;
+import view.ReservePane.ReservePane;
 import view.SelectModulesPane.SelectModulesPane;
 
 
@@ -13,6 +14,7 @@ public class ModuleChooserRootPane extends BorderPane {
 	private CreateStudentProfilePane cspp;
 	private OverviewPane ovp;
 	private SelectModulesPane smp;
+	private ReservePane rp;
 	private ModuleChooserMenuBar mstmb;
 	private TabPane tp;
 	
@@ -25,11 +27,12 @@ public class ModuleChooserRootPane extends BorderPane {
 		cspp = new CreateStudentProfilePane();
 		ovp = new OverviewPane();
 		smp = new SelectModulesPane();
+		rp = new ReservePane();
 		
 		//create tabs with panes added
 		Tab t1 = new Tab("Create Profile", cspp);
 		Tab t2 = new Tab("Select Modules", smp);
-		Tab t3 = new Tab("Reserve Modules");
+		Tab t3 = new Tab("Reserve Modules", rp);
 		Tab t4 = new Tab("Overview", ovp);
 		
 		//add tabs to tab pane
