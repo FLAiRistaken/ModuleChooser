@@ -1,5 +1,7 @@
 package view.SelectModulesPane;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -11,24 +13,21 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import model.Course;
+import model.Module;
+import model.StudentProfile;
 
 import javax.security.auth.callback.LanguageCallback;
 
 public class SelectModulesPane extends GridPane {
 
-    private ListViewPane unTerm1;
-    private ListViewPane unTerm2;
-    private ListViewPane selYear;
-    private ListViewPane selTerm1;
-    private ListViewPane selTerm2;
-    private ButtonsPane btnTerm1;
-    private ButtonsPane btnTerm2;
-    private Button btnReset;
-    private Button btnSubmit;
-    private Label lblT1Credits;
-    private Label lblT2Credits;
-    private TextField txtT1Credits;
-    private TextField txtT2Credits;
+    private ListViewPane<Module> unTerm1, unTerm2, selYear, selTerm1, selTerm2;
+    private ButtonsPane btnTerm1, btnTerm2;
+    private Button btnReset, btnSubmit;
+    private Label lblT1Credits, lblT2Credits;
+    private TextField txtT1Credits, txtT2Credits;
+
+    private ObservableList<Module> unModTerm1, unModTerm2, selModYear, selModTerm1, selModTerm2;
 
     private int maxCredits;
 
@@ -36,8 +35,11 @@ public class SelectModulesPane extends GridPane {
 
         this.setPadding(new Insets(20));
 
-        unTerm1 = new ListViewPane();
-        unTerm2 = new ListViewPane();
+        unModTerm1 = FXCollections.observableArrayList();
+        unModTerm2 = FXCollections.observableArrayList();
+
+        unTerm1 = new ListViewPane(unModTerm1);
+        unTerm2 = new ListViewPane(unModTerm2);
         btnTerm1 = new ButtonsPane();
         btnTerm2 = new ButtonsPane();
 
@@ -71,9 +73,13 @@ public class SelectModulesPane extends GridPane {
         leftVbox.setAlignment(Pos.CENTER_LEFT);
 
         //Right side
-        selYear = new ListViewPane();
-        selTerm1 = new ListViewPane();
-        selTerm2 = new ListViewPane();
+        selModYear = FXCollections.observableArrayList();
+        selModTerm1 = FXCollections.observableArrayList();
+        selModTerm2 = FXCollections.observableArrayList();
+
+        selYear = new ListViewPane(selModYear);
+        selTerm1 = new ListViewPane(selModTerm1);
+        selTerm2 = new ListViewPane(selModTerm2);
         lblT2Credits = new Label("Current term 2 credits: ");
         txtT2Credits = new TextField("0");
 
