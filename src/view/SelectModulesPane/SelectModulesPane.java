@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 import javax.security.auth.callback.LanguageCallback;
@@ -39,11 +40,16 @@ public class SelectModulesPane extends GridPane {
         unTerm2 = new ListViewPane();
         btnTerm1 = new ButtonsPane();
         btnTerm2 = new ButtonsPane();
+
         lblT1Credits = new Label("Current term 1 credits: ");
         txtT1Credits = new TextField("0");
 
         VBox leftTopVbox = new VBox(unTerm1, btnTerm1);
         VBox leftBottomVbox = new VBox(unTerm2, btnTerm2);
+
+        leftTopVbox.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        leftBottomVbox.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+
 
         leftTopVbox.setAlignment(Pos.TOP_CENTER);
         leftBottomVbox.setAlignment(Pos.BOTTOM_CENTER);
@@ -55,8 +61,10 @@ public class SelectModulesPane extends GridPane {
         btnTerm1.setAlignment(Pos.CENTER);
         btnTerm2.setAlignment(Pos.CENTER);
 
-        unTerm1.setPrefSize(450, 175);
-        unTerm2.setPrefSize(450, 175);
+        unTerm1.prefWidthProperty().bind(this.widthProperty());
+        unTerm2.prefWidthProperty().bind(this.widthProperty());
+        unTerm1.prefHeightProperty().bind(this.heightProperty());
+        unTerm2.prefHeightProperty().bind(this.heightProperty());
         txtT1Credits.setPrefSize(60, 20);
 
         VBox leftVbox = new VBox(leftTopVbox, leftBottomVbox);
@@ -69,13 +77,15 @@ public class SelectModulesPane extends GridPane {
         lblT2Credits = new Label("Current term 2 credits: ");
         txtT2Credits = new TextField("0");
 
-        selYear.setPrefSize(450, 100);
-        selYear.setMinSize(300, 100);
+        selYear.prefWidthProperty().bind(this.widthProperty());
+        selYear.prefHeightProperty().bind(this.heightProperty());
         selYear.getLblList().setText("Selected Year Long modules");
         selTerm1.getLblList().setText("Selected Term 1 modules");
         selTerm2.getLblList().setText("Selected Term 2 modules");
-        selTerm1.setPrefSize(450, 175);
-        selTerm2.setPrefSize(450, 175);
+        selTerm1.prefWidthProperty().bind(this.widthProperty());
+        selTerm1.prefHeightProperty().bind(this.heightProperty());
+        selTerm2.prefWidthProperty().bind(this.widthProperty());
+        selTerm2.prefHeightProperty().bind(this.heightProperty());
         txtT2Credits.setPrefSize(60, 20);
 
 

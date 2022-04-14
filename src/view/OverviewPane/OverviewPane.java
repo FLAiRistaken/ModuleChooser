@@ -31,13 +31,20 @@ public class OverviewPane extends GridPane {
         reserve = new TextArea("Reserve modules will show here when selected...");
         btnSave = new Button("Save overview");
 
-        profile.setPrefSize(600, 100);
+        profile.prefWidthProperty().bind(this.widthProperty());
+        profile.prefHeightProperty().bind(this.heightProperty());
+       // profile.setPrefSize(600, 100);
         profile.setEditable(false);
 
-        selected.setPrefSize(300, 200);
+        selected.prefWidthProperty().bind(this.widthProperty());
+        selected.prefHeightProperty().bind(this.heightProperty());
+       // selected.setPrefSize(300, 200);
         selected.setEditable(false);
 
-        reserve.setPrefSize(300, 200);
+
+        reserve.prefWidthProperty().bind(this.widthProperty());
+        reserve.prefHeightProperty().bind(this.heightProperty());
+      //  reserve.setPrefSize(300, 200);
         reserve.setEditable(false);
 
         VBox vbox = new VBox(profile);
@@ -57,7 +64,7 @@ public class OverviewPane extends GridPane {
         selected.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         reserve.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
-        GridPane.setVgrow(vbox, Priority.ALWAYS);
+       /* GridPane.setVgrow(vbox, Priority.ALWAYS);
         GridPane.setHgrow(vbox, Priority.ALWAYS);
         GridPane.setVgrow(profile, Priority.ALWAYS);
         GridPane.setHgrow(profile, Priority.ALWAYS);
@@ -67,10 +74,7 @@ public class OverviewPane extends GridPane {
         GridPane.setVgrow(selected, Priority.ALWAYS);
         GridPane.setHgrow(selected, Priority.ALWAYS);
         GridPane.setVgrow(reserve, Priority.ALWAYS);
-        GridPane.setHgrow(reserve, Priority.ALWAYS);
-
-
-
+        GridPane.setHgrow(reserve, Priority.ALWAYS);*/
 
 
         gridLinesVisibleProperty().set(true);
