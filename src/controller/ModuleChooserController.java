@@ -2,6 +2,7 @@ package controller;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
 import model.Course;
 import model.Schedule;
 import model.Module;
@@ -48,8 +49,13 @@ public class ModuleChooserController {
 	//event handler (currently empty), which can be used for creating a profile
 	private class CreateStudentProfileHandler implements EventHandler<ActionEvent> {
 		public void handle(ActionEvent e) {
-			
-			
+
+			if (!cspp.validFields()){
+
+			} else {
+				model = cspp.getStudentProfile();
+				view.changeTab(1);
+			}
 		}
 	}
 
@@ -118,6 +124,14 @@ public class ModuleChooserController {
 		courses[1] = softEng;
 
 		return courses;
+	}
+
+	public void alertDialogBuilder(String title, String header, String content) {
+		Alert alert = new Alert(Alert.AlertType.INFORMATION);
+		alert.setTitle(title);
+		alert.setHeaderText(header);
+		alert.setContentText(content);
+		alert.showAndWait();
 	}
 
 }
