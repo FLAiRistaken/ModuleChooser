@@ -1,5 +1,6 @@
 package view.SelectModulesPane;
 
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -12,6 +13,7 @@ public class ButtonsPane extends HBox {
 
     public ButtonsPane() {
         this.setSpacing(15);
+        this.setPadding(new Insets(10));
 
         lblButton = new Label();
         add = new Button("Add");

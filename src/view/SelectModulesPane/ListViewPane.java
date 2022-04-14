@@ -17,6 +17,7 @@ public class ListViewPane extends VBox {
         lblList = new Label();
 
         listViewBox.setPrefSize(450, 175);
+        listViewBox.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
         this.getChildren().addAll(lblList, listViewBox);
     }
