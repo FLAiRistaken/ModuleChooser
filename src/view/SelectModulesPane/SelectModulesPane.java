@@ -40,6 +40,8 @@ public class SelectModulesPane extends GridPane {
 
         unTerm1 = new ListViewPane(unModTerm1);
         unTerm2 = new ListViewPane(unModTerm2);
+        unTerm1.getListView().getSelectionModel();
+
         btnTerm1 = new ButtonsPane();
         btnTerm2 = new ButtonsPane();
 
