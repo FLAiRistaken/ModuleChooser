@@ -174,8 +174,9 @@ public class ModuleChooserController {
 
 
 			if (!(course.getCourseName()).equals(nextCourseName)){
+				cspp.getTxtDebug().setText(course.getCourseName() + "\n" + nextCourseName + "\n");
 				courseIn.add(course);
-				course = new Course(nextCourseName);
+				course = getCourse(nextLine);
 			}
 		}
 		sc.close();
