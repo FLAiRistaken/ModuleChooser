@@ -1,5 +1,6 @@
 package view.SelectModulesPane;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
@@ -10,6 +11,8 @@ public class ListViewPane<Module> extends VBox {
 
     private ListView listViewBox;
     private Label lblList;
+
+
 
     public ListViewPane(ObservableList list){
         this.setPadding(new Insets(15));
@@ -26,4 +29,9 @@ public class ListViewPane<Module> extends VBox {
     public Label getLblList(){
         return lblList;
     }
+
+    public ListView getListView(){
+        return listViewBox;
+    }
+
 }
