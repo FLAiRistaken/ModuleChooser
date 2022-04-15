@@ -10,6 +10,14 @@ import model.StudentProfile;
 import view.ModuleChooserRootPane;
 import view.CreateStudentProfilePane;
 import view.ModuleChooserMenuBar;
+import view.SelectModulesPane.SelectModulesPane;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class ModuleChooserController {
 
@@ -30,7 +38,11 @@ public class ModuleChooserController {
 		mstmb = view.getModuleSelectionToolMenuBar();
 
 		//add courses to combobox in create student profile pane using the generateAndGetCourses helper method below
-		cspp.addCoursesToComboBox(generateAndGetCourses());
+		try {
+			cspp.addCoursesToComboBox(setupCourses());
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 
 		//attach event handlers to view using private helper method
 		this.attachEventHandlers();	
@@ -61,7 +73,7 @@ public class ModuleChooserController {
 
 
 	//helper method - generates course and module data and returns courses within an array
-	private Course[] generateAndGetCourses() {
+	/*private Course[] generateAndGetCourses() {
 		Module imat3423 = new Module("IMAT3423", "Systems Building: Methods", 15, true, Schedule.TERM_1);
 		Module ctec3451 = new Module("CTEC3451", "Development Project", 30, true, Schedule.YEAR_LONG);
 		Module ctec3902_SoftEng = new Module("CTEC3902", "Rigorous Systems", 15, true, Schedule.TERM_2);	
@@ -74,7 +86,7 @@ public class ModuleChooserController {
 		Module ctec3905 = new Module("CTEC3905", "Front-End Web Development", 15, false, Schedule.TERM_2);
 		Module ctec3906 = new Module("CTEC3906", "Interaction Design", 15, false, Schedule.TERM_1);
 		Module ctec3911 = new Module("CTEC3911", "Mobile Application Development", 15, false, Schedule.TERM_1);
-		Module imat3410 = new Module("IMAT3104", "Database Management and Programming", 15, false, Schedule.TERM_2);
+		Module imat3104 = new Module("IMAT3104", "Database Management and Programming", 15, false, Schedule.TERM_2);
 		Module imat3406 = new Module("IMAT3406", "Fuzzy Logic and Knowledge Based Systems", 15, false, Schedule.TERM_1);
 		Module imat3611 = new Module("IMAT3611", "Computer Ethics and Privacy", 15, false, Schedule.TERM_1);
 		Module imat3613 = new Module("IMAT3613", "Data Mining", 15, false, Schedule.TERM_1);
@@ -94,7 +106,7 @@ public class ModuleChooserController {
 		compSci.addModuleToCourse(ctec3905);
 		compSci.addModuleToCourse(ctec3906);
 		compSci.addModuleToCourse(ctec3911);
-		compSci.addModuleToCourse(imat3410);
+		compSci.addModuleToCourse(imat3104);
 		compSci.addModuleToCourse(imat3406);
 		compSci.addModuleToCourse(imat3611);
 		compSci.addModuleToCourse(imat3613);
@@ -113,7 +125,7 @@ public class ModuleChooserController {
 		softEng.addModuleToCourse(ctec3905);
 		softEng.addModuleToCourse(ctec3906);
 		softEng.addModuleToCourse(ctec3911);
-		softEng.addModuleToCourse(imat3410);
+		softEng.addModuleToCourse(imat3104);
 		softEng.addModuleToCourse(imat3406);
 		softEng.addModuleToCourse(imat3611);
 		softEng.addModuleToCourse(imat3613);
@@ -124,7 +136,66 @@ public class ModuleChooserController {
 		courses[1] = softEng;
 
 		return courses;
+	}*/
+
+	private Course[] setupCourses() throws FileNotFoundException {
+		List<Course> courseIn = new ArrayList<Course>();
+		Course course;
+
+		Scanner sc = new Scanner(new File("coursesdata.txt"));
+
+		String curLine = sc.nextLine();
+		String[] curLineSplit = curLine.split(",");
+
+		course = getCourse(curLineSplit);
+
+		while (sc.hasNextLine()){
+			String courseName = curLineSplit[0];
+			String moduleCode = curLineSplit[1];
+			String moduleName = curLineSplit[2];
+			int moduleCredits = Integer.parseInt(curLineSplit[3]);
+			boolean moduleManditory = Boolean.parseBoolean(curLineSplit[4]);
+			Schedule moduleTerm;
+
+			if (Integer.parseInt(curLineSplit[5]) == 1){
+				moduleTerm = Schedule.TERM_1;
+			} else if (Integer.parseInt(curLineSplit[5]) == 2){
+				moduleTerm = Schedule.TERM_2;
+			} else {
+				moduleTerm = Schedule.YEAR_LONG;
+			}
+
+			Module module = new Module(moduleCode, moduleName, moduleCredits, moduleManditory, moduleTerm);
+			course.addModuleToCourse(module);
+
+
+			String nextLine[] = sc.nextLine().split(",");
+			String nextCourseName = nextLine[0];
+
+
+			if (!(course.getCourseName()).equals(nextCourseName)){
+				courseIn.add(course);
+				course = new Course(nextCourseName);
+			}
+		}
+		sc.close();
+
+		Course[] courses = new Course[courseIn.size()];
+		for(int i=0; i < courses.length; i++){
+			courses[i] = courseIn.get(i);
+		}
+
+		return courses;
 	}
+
+	public Course getCourse(String[] line){
+		if (line[0].equals("cs")){
+			return new Course("Computer Science");
+		} else {
+			return new Course("Software Engineering");
+		}
+	}
+
 
 	public void alertDialogBuilder(String title, String header, String content) {
 		Alert alert = new Alert(Alert.AlertType.INFORMATION);
