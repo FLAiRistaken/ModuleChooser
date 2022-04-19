@@ -10,11 +10,11 @@ import model.StudentProfile;
 import view.ModuleChooserRootPane;
 import view.CreateStudentProfilePane;
 import view.ModuleChooserMenuBar;
+import view.ReservePane.ReservePane;
 import view.SelectModulesPane.SelectModulesPane;
 import view.OverviewPane.OverviewPane;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +29,8 @@ public class ModuleChooserController {
 	private CreateStudentProfilePane cspp;
 	private ModuleChooserMenuBar mstmb;
 	private OverviewPane ovp;
+	private SelectModulesPane smp;
+	private ReservePane rp;
 
 	public ModuleChooserController(ModuleChooserRootPane view, StudentProfile model) {
 		//initialise view and model fields
@@ -39,6 +41,8 @@ public class ModuleChooserController {
 		cspp = view.getCreateStudentProfilePane();
 		mstmb = view.getModuleSelectionToolMenuBar();
 		ovp = view.getOverviewPane();
+		smp = view.getSelectModulesPane();
+		rp = view.getReservePane();
 
 
 		//add courses to combobox in create student profile pane using the generateAndGetCourses helper method below
@@ -60,6 +64,11 @@ public class ModuleChooserController {
 		
 		//attach an event handler to the menu bar that closes the application
 		mstmb.addExitHandler(e -> System.exit(0));
+
+		mstmb.addSaveHandler(new SaveMenuHandler());
+		mstmb.addLoadHandler(new LoadMenuHandler());
+		mstmb.addAboutHandler(e -> this.alertDialogBuilder(Alert.AlertType.INFORMATION, "About Module Chooser", "Module Chooser", "A module chooser, created by P2593265"));
+
 	}
 	
 	//event handler (currently empty), which can be used for creating a profile
@@ -73,6 +82,8 @@ public class ModuleChooserController {
 
 				ovp.clearOverview();
 				ovp.setProfileData(model);
+
+				smp.getUnModTerm1Contents().addAll(cspp.getSelectedCourse().getAllModulesOnCourse());
 
 				view.changeTab(1);
 			}
@@ -146,7 +157,6 @@ public class ModuleChooserController {
 		return courses;
 	}*/
 
-	String debugText;
 	private Course[] setupCourses() throws FileNotFoundException {
 		List<Course> courseIn = new ArrayList<Course>();
 		Course course;
@@ -157,7 +167,6 @@ public class ModuleChooserController {
 		String[] curLineSplit = curLine.split(",");
 
 		course = new Course(curLineSplit[0]);
-		debugText += "\n" + course;
 
 		while (sc.hasNextLine()){
 			String courseName = curLineSplit[0];
@@ -184,13 +193,8 @@ public class ModuleChooserController {
 
 
 			if (!(course.getCourseName()).equals(nextCourseName)){
-				debugText += "\n" + course.getCourseName() + "\n" + nextCourseName;
 				courseIn.add(course);
-				debugText += "\n" + courseIn + "\n" + courseIn.size();
 				course = new Course(nextCourseName);
-				debugText += "\n" + nextCourseName;
-				debugText += "\n" + course;
-				//courseIn.add(course);
 			}
 		}
 		sc.close();
@@ -200,8 +204,6 @@ public class ModuleChooserController {
 			courses[i] = courseIn.get(i);
 
 		}
-		debugText += "\n" + courseIn + "\n" + courseIn.size();
-		cspp.getTxtDebug().setText(debugText);
 		return courses;
 	}
 
@@ -214,12 +216,48 @@ public class ModuleChooserController {
 	}*/
 
 
-	public void alertDialogBuilder(String title, String header, String content) {
-		Alert alert = new Alert(Alert.AlertType.INFORMATION);
+	public void alertDialogBuilder(Alert.AlertType type, String title, String header, String content) {
+		Alert alert = new Alert(type);
 		alert.setTitle(title);
 		alert.setHeaderText(header);
 		alert.setContentText(content);
 		alert.showAndWait();
+	}
+
+	private class SaveMenuHandler implements EventHandler<ActionEvent>{
+		public void handle(ActionEvent e) {
+			try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("studentProfile.dat"))){
+
+				oos.writeObject(model);
+				oos.flush();
+				//oos.close();
+
+				alertDialogBuilder(Alert.AlertType.INFORMATION, "Information Dialog", "Save successful!", "Student profile saved to studentProfile.dat");
+			}
+			catch (IOException ioExcep){
+				alertDialogBuilder(Alert.AlertType.ERROR, "Error", "Error saving! :(", "There was an error saving the student profile.");
+			}
+		}
+	}
+
+	private class LoadMenuHandler implements EventHandler<ActionEvent>{
+		public void handle(ActionEvent e){
+			try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("studentProfile.dat"))){
+
+				model = (StudentProfile) ois.readObject();
+
+				alertDialogBuilder(Alert.AlertType.INFORMATION, "Information Dialog", "Load successful!", "Student profile loaded from studentProfile.dat");
+			}
+			catch (IOException ioExcep){
+				alertDialogBuilder(Alert.AlertType.ERROR, "Error", "Error loading! :(", "There was an error loading the student profile.");
+			}
+			catch (ClassNotFoundException c) {
+				alertDialogBuilder(Alert.AlertType.ERROR, "Error", "Error loading! :(", "Class not found.");
+			}
+
+			cspp.clearStudentProfilePane();
+			cspp.loadProfile(model);
+		}
 	}
 
 }

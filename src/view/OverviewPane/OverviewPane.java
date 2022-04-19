@@ -104,8 +104,8 @@ public class OverviewPane extends GridPane {
     }
 
     public void clearOverview(){
-        profile.setText("");
-        selected.setText("");
-        reserve.setText("");
+        profile.clear();
+        selected.clear();
+        reserve.clear();
     }
 }

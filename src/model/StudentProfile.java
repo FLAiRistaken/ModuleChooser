@@ -3,9 +3,10 @@ package model;
 import java.time.LocalDate;
 import java.util.Set;
 import java.util.TreeSet;
+import java.io.Serializable;
 
 
-public class StudentProfile {
+public class StudentProfile implements Serializable {
 
 	private String studentPnumber;
 	private Name studentName;
