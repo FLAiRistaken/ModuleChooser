@@ -11,6 +11,7 @@ import view.ModuleChooserRootPane;
 import view.CreateStudentProfilePane;
 import view.ModuleChooserMenuBar;
 import view.SelectModulesPane.SelectModulesPane;
+import view.OverviewPane.OverviewPane;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -27,6 +28,7 @@ public class ModuleChooserController {
 	
 	private CreateStudentProfilePane cspp;
 	private ModuleChooserMenuBar mstmb;
+	private OverviewPane ovp;
 
 	public ModuleChooserController(ModuleChooserRootPane view, StudentProfile model) {
 		//initialise view and model fields
@@ -36,6 +38,8 @@ public class ModuleChooserController {
 		//initialise view subcontainer fields
 		cspp = view.getCreateStudentProfilePane();
 		mstmb = view.getModuleSelectionToolMenuBar();
+		ovp = view.getOverviewPane();
+
 
 		//add courses to combobox in create student profile pane using the generateAndGetCourses helper method below
 		try {
@@ -66,6 +70,10 @@ public class ModuleChooserController {
 
 			} else {
 				model = cspp.getStudentProfile();
+
+				ovp.clearOverview();
+				ovp.setProfileData(model);
+
 				view.changeTab(1);
 			}
 		}
@@ -138,6 +146,7 @@ public class ModuleChooserController {
 		return courses;
 	}*/
 
+	String debugText;
 	private Course[] setupCourses() throws FileNotFoundException {
 		List<Course> courseIn = new ArrayList<Course>();
 		Course course;
@@ -147,7 +156,8 @@ public class ModuleChooserController {
 		String curLine = sc.nextLine();
 		String[] curLineSplit = curLine.split(",");
 
-		course = getCourse(curLineSplit);
+		course = new Course(curLineSplit[0]);
+		debugText += "\n" + course;
 
 		while (sc.hasNextLine()){
 			String courseName = curLineSplit[0];
@@ -174,9 +184,13 @@ public class ModuleChooserController {
 
 
 			if (!(course.getCourseName()).equals(nextCourseName)){
-				cspp.getTxtDebug().setText(course.getCourseName() + "\n" + nextCourseName + "\n");
+				debugText += "\n" + course.getCourseName() + "\n" + nextCourseName;
 				courseIn.add(course);
-				course = getCourse(nextLine);
+				debugText += "\n" + courseIn + "\n" + courseIn.size();
+				course = new Course(nextCourseName);
+				debugText += "\n" + nextCourseName;
+				debugText += "\n" + course;
+				//courseIn.add(course);
 			}
 		}
 		sc.close();
@@ -184,18 +198,20 @@ public class ModuleChooserController {
 		Course[] courses = new Course[courseIn.size()];
 		for(int i=0; i < courses.length; i++){
 			courses[i] = courseIn.get(i);
-		}
 
+		}
+		debugText += "\n" + courseIn + "\n" + courseIn.size();
+		cspp.getTxtDebug().setText(debugText);
 		return courses;
 	}
 
-	public Course getCourse(String[] line){
+	/*public Course getCourse(String[] line){
 		if (line[0].equals("cs")){
 			return new Course("Computer Science");
 		} else {
 			return new Course("Software Engineering");
 		}
-	}
+	}*/
 
 
 	public void alertDialogBuilder(String title, String header, String content) {
