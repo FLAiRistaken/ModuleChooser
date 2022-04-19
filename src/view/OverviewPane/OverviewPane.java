@@ -9,6 +9,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import model.StudentProfile;
 
 public class OverviewPane extends GridPane {
 
@@ -82,5 +83,29 @@ public class OverviewPane extends GridPane {
         this.add(vbox, 0, 1);
         this.add(hbox, 0, 2);
         this.add(hboxbtn, 0, 3);
+    }
+
+    public void setProfileData(StudentProfile profileData){
+
+        var name = profileData.getStudentName().getFullName();
+        var pnum = profileData.getStudentPnumber();
+        var email = profileData.getStudentEmail();
+        var date = profileData.getSubmissionDate();
+        var courseName = profileData.getStudentCourse().getCourseName();
+
+        String data = "";
+        data += "Name: " + name + "\n";
+        data += "P Number: " + pnum + "\n";
+        data += "Email: " + email + "\n";
+        data += "Date: " + date + "\n";
+        data += "Course: " + courseName;
+
+        profile.setText(data);
+    }
+
+    public void clearOverview(){
+        profile.setText("");
+        selected.setText("");
+        reserve.setText("");
     }
 }

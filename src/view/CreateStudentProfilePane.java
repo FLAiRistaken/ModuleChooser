@@ -23,6 +23,7 @@ public class CreateStudentProfilePane extends GridPane {
 	private ComboBox<Course> cboCourses;
 	private DatePicker inputDate;
 	private TextField txtFirstName, txtSurname,  txtPnumber, txtEmail;
+	private TextArea txtDebug;
 	private Button btnCreateProfile;
 
 	public CreateStudentProfilePane() {
@@ -52,6 +53,7 @@ public class CreateStudentProfilePane extends GridPane {
 		txtSurname = new TextField();
 		txtPnumber = new TextField();
 		txtEmail = new TextField();
+		txtDebug = new TextArea();
 		
 		inputDate = new DatePicker();
 		
@@ -79,6 +81,9 @@ public class CreateStudentProfilePane extends GridPane {
 			
 		this.add(new HBox(), 0, 6);
 		this.add(btnCreateProfile, 1, 6);
+
+
+		this.add(txtDebug, 1, 7);
 	}
 	
 	//method to allow the controller to add courses to the combobox
@@ -106,6 +111,10 @@ public class CreateStudentProfilePane extends GridPane {
 	
 	public LocalDate getStudentDate() {
 		return inputDate.getValue();
+	}
+
+	public TextArea getTxtDebug(){
+		return txtDebug;
 	}
 
 	//Returns entered student details as a StudentProfile
