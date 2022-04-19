@@ -133,4 +133,8 @@ public class SelectModulesPane extends GridPane {
         this.add(hboxBtnSubmit, 1, 3);
 
     }
+
+    public ObservableList<Module> getUnModTerm1Contents(){
+        return unModTerm1;
+    }
 }

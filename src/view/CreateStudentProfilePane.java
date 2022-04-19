@@ -23,7 +23,6 @@ public class CreateStudentProfilePane extends GridPane {
 	private ComboBox<Course> cboCourses;
 	private DatePicker inputDate;
 	private TextField txtFirstName, txtSurname,  txtPnumber, txtEmail;
-	private TextArea txtDebug;
 	private Button btnCreateProfile;
 
 	public CreateStudentProfilePane() {
@@ -53,7 +52,6 @@ public class CreateStudentProfilePane extends GridPane {
 		txtSurname = new TextField();
 		txtPnumber = new TextField();
 		txtEmail = new TextField();
-		txtDebug = new TextArea();
 		
 		inputDate = new DatePicker();
 		
@@ -81,9 +79,6 @@ public class CreateStudentProfilePane extends GridPane {
 			
 		this.add(new HBox(), 0, 6);
 		this.add(btnCreateProfile, 1, 6);
-
-
-		this.add(txtDebug, 1, 7);
 	}
 	
 	//method to allow the controller to add courses to the combobox
@@ -113,9 +108,6 @@ public class CreateStudentProfilePane extends GridPane {
 		return inputDate.getValue();
 	}
 
-	public TextArea getTxtDebug(){
-		return txtDebug;
-	}
 
 	//Returns entered student details as a StudentProfile
 	public StudentProfile getStudentProfile(){
@@ -178,11 +170,40 @@ public class CreateStudentProfilePane extends GridPane {
 
 		return matcher.matches();
 	}
+
+	public void clearStudentProfilePane() {
+		txtFirstName.clear();
+		txtSurname.clear();
+		txtPnumber.clear();
+		txtEmail.clear();
+		inputDate.setValue(null);
+		cboCourses.getSelectionModel().clearSelection();
+	}
+
+	public void loadProfile(StudentProfile loadedProfile){
+		Course course = loadedProfile.getStudentCourse();
+		String pnum = loadedProfile.getStudentPnumber();
+		String fname = loadedProfile.getStudentName().getFirstName();
+		String sname = loadedProfile.getStudentName().getFamilyName();
+		String email = loadedProfile.getStudentEmail();
+		LocalDate date = loadedProfile.getSubmissionDate();
+
+		cboCourses.getSelectionModel().select(course);
+		txtFirstName.setText(fname);
+		txtSurname.setText(sname);
+		txtPnumber.setText(pnum);
+		txtEmail.setText(email);
+		inputDate.setValue(date);
+
+		txtFirstName.setText(cboCourses.getSelectionModel().getSelectedItem().getCourseName());
+	}
 	
 	
 	//method to attach the create student profile button event handler
 	public void addCreateStudentProfileHandler(EventHandler<ActionEvent> handler) {
 		btnCreateProfile.setOnAction(handler);
 	}
+
+
 
 }
