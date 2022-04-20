@@ -8,6 +8,7 @@ import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -15,6 +16,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import model.Course;
 import model.Module;
+import model.Schedule;
 import model.StudentProfile;
 
 import javax.security.auth.callback.LanguageCallback;
@@ -26,6 +28,7 @@ public class SelectModulesPane extends GridPane {
     private Button btnReset, btnSubmit;
     private Label lblT1Credits, lblT2Credits;
     private TextField txtT1Credits, txtT2Credits;
+    private TextArea txtDebug;
 
     private ObservableList<Module> unModTerm1, unModTerm2, selModYear, selModTerm1, selModTerm2;
 
@@ -124,6 +127,8 @@ public class SelectModulesPane extends GridPane {
         hboxBtnSubmit.setAlignment(Pos.CENTER_LEFT);
         hboxBtnSubmit.setPadding(new Insets(20, 20, 0, 20));
 
+        txtDebug = new TextArea();
+
 
         this.add(leftVbox, 0, 1);
         this.add(rightVbox, 1, 1);
@@ -131,10 +136,56 @@ public class SelectModulesPane extends GridPane {
         this.add(t2creditsHbox, 1, 2);
         this.add(hboxBtnReset, 0, 3);
         this.add(hboxBtnSubmit, 1, 3);
+        this.add(txtDebug, 0, 4);
 
     }
 
     public ObservableList<Module> getUnModTerm1Contents(){
         return unModTerm1;
+    }
+
+    public ObservableList<Module> getUnModTerm2Contents(){
+        return unModTerm2;
+    }
+
+    public ObservableList<Module> getSelModYearContents(){
+        return selModYear;
+    }
+
+    public ObservableList<Module> getSelModTerm1Contents(){
+        return selModTerm1;
+    }
+
+    public ObservableList<Module> getSelModTerm2Contents(){
+        return selModTerm2;
+    }
+
+    public void loadModules(StudentProfile profile){
+        for (Module m : profile.getStudentCourse().getAllModulesOnCourse()){
+
+            if (m.getDelivery().equals(Schedule.TERM_1)){
+                if(m.isMandatory() == false){
+                    getUnModTerm1Contents().add(m);
+                } else {
+                    getSelModTerm1Contents().add(m);
+                }
+            } else if (m.getDelivery().equals(Schedule.TERM_2)) {
+                if (m.isMandatory() == false) {
+                    getUnModTerm2Contents().add(m);
+                } else {
+                    getSelModTerm2Contents().add(m);
+                }
+            } else {
+                getSelModYearContents().add(m);
+            }
+        }
+    }
+
+    public TextArea getTxtDebug(){
+        return txtDebug;
+    }
+
+    public void clearSMP(){
+
     }
 }

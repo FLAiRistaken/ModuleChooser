@@ -1,5 +1,7 @@
 package view.ReservePane;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Accordion;
@@ -8,6 +10,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import model.Module;
 
 public class ReservePane extends Accordion {
     private ListViewPane unTerm1;
@@ -20,13 +23,18 @@ public class ReservePane extends Accordion {
     private TitledPane term2Pane;
     private Accordion accordion;
 
+    private ObservableList<Module> listUnTerm1, listUnTerm2, listResTerm1, listResTerm2;
+
     public ReservePane(){
 
         this.setPrefSize(800, 500);
         this.setPadding(new Insets(20));
 
-        unTerm1 = new ListViewPane();
-        resTerm1 = new ListViewPane();
+        listUnTerm1 = FXCollections.observableArrayList();
+        listResTerm1 = FXCollections.observableArrayList();
+        unTerm1 = new ListViewPane(listUnTerm1);
+        resTerm1 = new ListViewPane(listResTerm2);
+
 
         unTerm1.getLblList().setText("Unselected Term 1 modules");
         resTerm1.getLblList().setText("Reserved Term 1 modules");
@@ -59,8 +67,10 @@ public class ReservePane extends Accordion {
 
         term1Pane = new TitledPane("Term 1 modules", term1Vbox);
 
-        unTerm2 = new ListViewPane();
-        resTerm2 = new ListViewPane();
+        listUnTerm2 = FXCollections.observableArrayList();
+        listResTerm2 = FXCollections.observableArrayList();
+        unTerm2 = new ListViewPane(listUnTerm2);
+        resTerm2 = new ListViewPane(listResTerm2);
 
         unTerm2.getLblList().setText("Unselected Term 2 modules");
         resTerm2.getLblList().setText("Reserved Term 2 modules");
@@ -89,5 +99,18 @@ public class ReservePane extends Accordion {
 
 
 
+    }
+
+    public ObservableList<Module> getListUnTerm1(){
+        return listUnTerm1;
+    }
+    public ObservableList<Module> getListUnTerm2(){
+        return listUnTerm2;
+    }
+    public ObservableList<Module> getListResTerm1() {
+        return listResTerm1;
+    }
+    public ObservableList<Module> getListResTerm2() {
+        return listResTerm2;
     }
 }

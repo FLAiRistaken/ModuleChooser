@@ -9,15 +9,15 @@ import javafx.scene.layout.VBox;
 
 public class ListViewPane<Module> extends VBox {
 
-    private ListView listViewBox;
+    private ListView<Module> listViewBox;
     private Label lblList;
 
 
 
-    public ListViewPane(ObservableList list){
+    public ListViewPane(ObservableList<Module> list){
         this.setPadding(new Insets(15));
 
-        listViewBox = new ListView(list);
+        listViewBox = new ListView<Module>(list);
         lblList = new Label();
 
         listViewBox.setPrefSize(450, 175);
@@ -30,7 +30,7 @@ public class ListViewPane<Module> extends VBox {
         return lblList;
     }
 
-    public ListView getListView(){
+    public ListView<Module> getListView(){
         return listViewBox;
     }
 

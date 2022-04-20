@@ -74,6 +74,7 @@ public class ModuleChooserController {
 	//event handler (currently empty), which can be used for creating a profile
 	private class CreateStudentProfileHandler implements EventHandler<ActionEvent> {
 		public void handle(ActionEvent e) {
+			String debug = "";
 
 			if (!cspp.validFields()){
 
@@ -82,9 +83,32 @@ public class ModuleChooserController {
 
 				ovp.clearOverview();
 				ovp.setProfileData(model);
+				debug += model.getStudentCourse() + "\n";
+				debug += model.getStudentCourse().getAllModulesOnCourse() + "\n";
 
-				smp.getUnModTerm1Contents().addAll(cspp.getSelectedCourse().getAllModulesOnCourse());
 
+				for (Module m : model.getStudentCourse().getAllModulesOnCourse()){
+
+					if (m.getDelivery().equals(Schedule.TERM_1)){
+						if(m.isMandatory() == false){
+							smp.getUnModTerm1Contents().add(m);
+							rp.getListUnTerm1().add(m);
+						} else {
+							smp.getSelModTerm1Contents().add(m);
+						}
+					} else if (m.getDelivery().equals(Schedule.TERM_2)) {
+						if (m.isMandatory() == false) {
+							smp.getUnModTerm2Contents().add(m);
+							rp.getListUnTerm2().add(m);
+						} else {
+							smp.getSelModTerm2Contents().add(m);
+						}
+					} else {
+						smp.getSelModYearContents().add(m);
+					}
+				}
+
+				smp.getTxtDebug().setText(debug);
 				view.changeTab(1);
 			}
 		}
@@ -165,10 +189,12 @@ public class ModuleChooserController {
 
 		String curLine = sc.nextLine();
 		String[] curLineSplit = curLine.split(",");
+		String courseID = curLineSplit[0];
 
-		course = new Course(curLineSplit[0]);
+		course = new Course(courseID);
 
-		while (sc.hasNextLine()){
+		String debug = "";
+		while (!(curLine.equals("end"))){
 			String courseName = curLineSplit[0];
 			String moduleCode = curLineSplit[1];
 			String moduleName = curLineSplit[2];
@@ -186,16 +212,21 @@ public class ModuleChooserController {
 
 			Module module = new Module(moduleCode, moduleName, moduleCredits, moduleManditory, moduleTerm);
 			course.addModuleToCourse(module);
+			debug += "\n" + curLine;
 
 
-			String nextLine[] = sc.nextLine().split(",");
-			String nextCourseName = nextLine[0];
+			//String nextLine[] = sc.nextLine().split(",");
+			//String nextCourseName = nextLine[0];
 
+			curLine = sc.nextLine();
+			curLineSplit = curLine.split(",");
+			String nextCourseName = curLineSplit[0];
 
 			if (!(course.getCourseName()).equals(nextCourseName)){
 				courseIn.add(course);
 				course = new Course(nextCourseName);
 			}
+
 		}
 		sc.close();
 
@@ -204,6 +235,7 @@ public class ModuleChooserController {
 			courses[i] = courseIn.get(i);
 
 		}
+		cspp.getTxtDebug().setText(debug);
 		return courses;
 	}
 
@@ -256,7 +288,13 @@ public class ModuleChooserController {
 			}
 
 			cspp.clearStudentProfilePane();
+			ovp.clearOverview();
+			//smp.loadModules();
 			cspp.loadProfile(model);
+			ovp.setProfileData(model);
+			smp.loadModules(model);
+
+			view.changeTab(0);
 		}
 	}
 

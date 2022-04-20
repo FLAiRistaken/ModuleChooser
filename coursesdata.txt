@@ -1,34 +1,34 @@
-Computer Science,IMAT3423,SystemsBuilding:Methods,15,true,1
-Computer Science,CTEC3451,DevelopmentProject,30,true,YEAR_LONG
-Computer Science,CTEC3902,RigorousSystems,15,false,2
-Computer Science,CTEC3110,SecureWebApplicationDevelopment,15,false,1
-Computer Science,CTEC3605,Multi-serviceNetworks1,15,false,1
-Computer Science,CTEC3606,Multi-serviceNetworks2,15,false,2
-Computer Science,CTEC3410,WebApplicationPenetrationTesting,15,false,2
-Computer Science,CTEC3904,FunctionalSoftwareDevelopment,15,false,2
-Computer Science,CTEC3905,Front-EndWebDevelopment,15,false,2
-Computer Science,CTEC3906,InteractionDesign,15,false,1
-Computer Science,CTEC3911,MobileApplicationDevelopment,15,false,1
-Computer Science,IMAT3104,DatabaseManagementandProgramming,15,false,2
-Computer Science,IMAT3406,FuzzyLogicandKnowledgeBasedSystems,15,false,1
-Computer Science,IMAT3611,ComputerEthiComputer ScienceandPrivacy,15,false,1
-Computer Science,IMAT3613,DataMining,15,false,1
-Computer Science,IMAT3614,BigDataandBusinessModels,15,false,2
-Computer Science,IMAT3428,InformationTechnologyServicesPractice,15,false,2
-Software Engineering,IMAT3423,SystemsBuilding:Methods,15,true,1
-Software Engineering,CTEC3451,DevelopmentProject,30,true,YEAR_LONG
-Software Engineering,CTEC3902,RigorousSystems,15,true,2
-Software Engineering,CTEC3110,SecureWebApplicationDevelopment,15,false,1
-Software Engineering,CTEC3605,Multi-serviceNetworks1,15,false,1
-Software Engineering,CTEC3606,Multi-serviceNetworks2,15,false,2
-Software Engineering,CTEC3410,WebApplicationPenetrationTesting,15,false,2
-Software Engineering,CTEC3904,FunctionalSoftwareDevelopment,15,false,2
-Software Engineering,CTEC3905,Front-EndWebDevelopment,15,false,2
-Software Engineering,CTEC3906,InteractionDesign,15,false,1
-Software Engineering,CTEC3911,MobileApplicationDevelopment,15,false,1
-Software Engineering,IMAT3104,DatabaseManagementandProgramming,15,false,2
-Software Engineering,IMAT3406,FuzzyLogicandKnowledgeBasedSystems,15,false,1
-Software Engineering,IMAT3611,ComputerEthiComputer ScienceandPrivacy,15,false,1
-Software Engineering,IMAT3613,DataMining,15,false,1
-Software Engineering,IMAT3614,BigDataandBusinessModels,15,false,2
+Computer Science,IMAT3423,Systems Building: Methods,15,true,1
+Computer Science,CTEC3451,Development Project,30,true,3
+Computer Science,CTEC3902,Rigorous Systems,15,false,2
+Computer Science,CTEC3110,Secure Web Application Development,15,false,1
+Computer Science,CTEC3605,Multi-service Networks 1,15,false,1
+Computer Science,CTEC3606,Multi-service Networks 2,15,false,2
+Computer Science,CTEC3410,Web Application Penetration Testing,15,false,2
+Computer Science,CTEC3904,Functional Software Development,15,false,2
+Computer Science,CTEC3905,Front-End Web Development,15,false,2
+Computer Science,CTEC3906,Interaction Design,15,false,1
+Computer Science,CTEC3911,Mobile Application Development,15,false,1
+Computer Science,IMAT3104,Database Management and Programming,15,false,2
+Computer Science,IMAT3406,Fuzzy Logic and Knowledge Based Systems,15,false,1
+Computer Science,IMAT3611,Computer Ethics and Privacy,15,false,1
+Computer Science,IMAT3613,Data Mining,15,false,1
+Computer Science,IMAT3614,Big Data and Business Models,15,false,2
+Computer Science,IMAT3428,Information Technology Services Practice,15,false,2
+Software Engineering,IMAT3423,Systems Building: Methods,15,true,1
+Software Engineering,CTEC3451,Development Project,30,true,3
+Software Engineering,CTEC3902,Rigorous Systems,15,true,2
+Software Engineering,CTEC3110,Secure Web Application Development,15,false,1
+Software Engineering,CTEC3605,Multi-service Networks 1,15,false,1
+Software Engineering,CTEC3606,Multi-service Networks 2,15,false,2
+Software Engineering,CTEC3410,Web Application Penetration Testing,15,false,2
+Software Engineering,CTEC3904,Functional Software Development,15,false,2
+Software Engineering,CTEC3905,Front-End Web Development,15,false,2
+Software Engineering,CTEC3906,Interaction Design,15,false,1
+Software Engineering,CTEC3911,Mobile Application Development,15,false,1
+Software Engineering,IMAT3104,Database Management and Programming,15,false,2
+Software Engineering,IMAT3406,Fuzzy Logic and Knowledge Based Systems,15,false,1
+Software Engineering,IMAT3611,Computer Ethics and Privacy,15,false,1
+Software Engineering,IMAT3613,Data Mining,15,false,1
+Software Engineering,IMAT3614,Big Data and Business Models,15,false,2
 end
