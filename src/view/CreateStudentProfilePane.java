@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import model.Course;
 import model.Name;
 import model.StudentProfile;
+import org.w3c.dom.Text;
 
 import java.util.Date;
 import java.util.regex.Pattern;
@@ -24,6 +25,7 @@ public class CreateStudentProfilePane extends GridPane {
 	private DatePicker inputDate;
 	private TextField txtFirstName, txtSurname,  txtPnumber, txtEmail;
 	private Button btnCreateProfile;
+	private TextArea txtDebug;
 
 	public CreateStudentProfilePane() {
 		//styling
@@ -54,6 +56,7 @@ public class CreateStudentProfilePane extends GridPane {
 		txtEmail = new TextField();
 		
 		inputDate = new DatePicker();
+		txtDebug = new TextArea();
 		
 		//initialise create profile button
 		btnCreateProfile = new Button("Create Profile");
@@ -79,6 +82,7 @@ public class CreateStudentProfilePane extends GridPane {
 			
 		this.add(new HBox(), 0, 6);
 		this.add(btnCreateProfile, 1, 6);
+		this.add(txtDebug, 1, 7);
 	}
 	
 	//method to allow the controller to add courses to the combobox
@@ -195,13 +199,16 @@ public class CreateStudentProfilePane extends GridPane {
 		txtEmail.setText(email);
 		inputDate.setValue(date);
 
-		txtFirstName.setText(cboCourses.getSelectionModel().getSelectedItem().getCourseName());
 	}
 	
 	
 	//method to attach the create student profile button event handler
 	public void addCreateStudentProfileHandler(EventHandler<ActionEvent> handler) {
 		btnCreateProfile.setOnAction(handler);
+	}
+
+	public TextArea getTxtDebug(){
+		return txtDebug;
 	}
 
 
