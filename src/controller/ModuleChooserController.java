@@ -69,6 +69,7 @@ public class ModuleChooserController {
 		mstmb.addLoadHandler(new LoadMenuHandler());
 		mstmb.addAboutHandler(e -> this.alertDialogBuilder(Alert.AlertType.INFORMATION, "About Module Chooser", "Module Chooser", "A module chooser, created by P2593265"));
 
+		rp.addAddModuleHandler(new addReserveModuleHandler());
 	}
 	
 	//event handler (currently empty), which can be used for creating a profile
@@ -239,13 +240,11 @@ public class ModuleChooserController {
 		return courses;
 	}
 
-	/*public Course getCourse(String[] line){
-		if (line[0].equals("cs")){
-			return new Course("Computer Science");
-		} else {
-			return new Course("Software Engineering");
+	private class addReserveModuleHandler implements EventHandler<ActionEvent>  {
+		public void handle(ActionEvent e) {
+			rp.addSelectedModule();
 		}
-	}*/
+	}
 
 
 	public void alertDialogBuilder(Alert.AlertType type, String title, String header, String content) {
@@ -293,6 +292,7 @@ public class ModuleChooserController {
 			cspp.loadProfile(model);
 			ovp.setProfileData(model);
 			smp.loadModules(model);
+			rp.loadModules(model);
 
 			view.changeTab(0);
 		}

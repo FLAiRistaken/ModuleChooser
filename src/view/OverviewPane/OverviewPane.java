@@ -33,7 +33,7 @@ public class OverviewPane extends GridPane {
         btnSave = new Button("Save overview");
 
         profile.prefWidthProperty().bind(this.widthProperty());
-        profile.prefHeightProperty().bind(this.heightProperty());
+        profile.setPrefHeight(400);
        // profile.setPrefSize(600, 100);
         profile.setEditable(false);
 

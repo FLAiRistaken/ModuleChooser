@@ -33,4 +33,11 @@ public class ButtonsPane extends HBox {
     public Label getLblButton() {
         return lblButton;
     }
+
+    public Button getAdd(){
+        return add;
+    }
+    public Button getRemove() {
+        return remove;
+    }
 }

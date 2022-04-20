@@ -25,4 +25,8 @@ public class ListViewPane<Module> extends VBox {
     public Label getLblList(){
         return lblList;
     }
+
+    public ListView<Module> getListView() {
+        return listViewBox;
+    }
 }
