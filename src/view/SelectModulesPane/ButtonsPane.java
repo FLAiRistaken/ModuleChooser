@@ -21,7 +21,7 @@ public class ButtonsPane extends HBox {
        // reset = new Button("Reset");
        // submit = new Button("Submit");
 
-        add.setDisable(true);
+       // add.setDisable(true);
        // submit.setDisable(true);
         add.setPrefSize(70, 20);
         remove.setPrefSize(70, 20);
@@ -36,5 +36,12 @@ public class ButtonsPane extends HBox {
 
     public Label getLblButton() {
         return lblButton;
+    }
+
+    public Button getAdd(){
+        return add;
+    }
+    public Button getRemove() {
+        return remove;
     }
 }
