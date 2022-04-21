@@ -119,6 +119,16 @@ public class OverviewPane extends GridPane {
         reserve.setText(data);
     }
 
+    public void clearProfile(){
+        profile.clear();
+    }
+    public void clearSelected(){
+        selected.clear();
+    }
+    public void clearReserve(){
+        reserve.clear();
+    }
+
     public void clearOverview(){
         profile.clear();
         selected.clear();

@@ -71,6 +71,7 @@ public class ModuleChooserController {
 
 		rp.addAddModuleHandler(new addReserveModuleHandler());
 		rp.addConfirmModuleHandler(new confirmReserveModuleHandler());
+		rp.addRemoveModuleHandler(new removeReserveModuleHandler());
 
 	}
 	
@@ -248,6 +249,17 @@ public class ModuleChooserController {
 		}
 	}
 
+	private class removeReserveModuleHandler implements EventHandler<ActionEvent> {
+		public void handle(ActionEvent e) {
+			if (rp.getPaneIndex() == 1){
+				model.removeSelectedReserveModule(rp.getSelectedModule(1, 1));
+			} else {
+				model.removeSelectedReserveModule(rp.getSelectedModule(2, 1));
+			}
+			rp.removeSelectedModule();
+		}
+	}
+
 	private class confirmReserveModuleHandler implements EventHandler<ActionEvent>{
 		public void handle(ActionEvent e) {
 			if (rp.getPaneIndex() == 1){
@@ -258,6 +270,7 @@ public class ModuleChooserController {
 			} else {
 				for (Module m : rp.getSelectedReserveModules(2)) {
 					model.addReservedModule(m);
+					ovp.clearReserve();
 					ovp.setReserveModuleData(model);
 					view.changeTab(3);
 				}
@@ -307,6 +320,7 @@ public class ModuleChooserController {
 
 			cspp.clearStudentProfilePane();
 			ovp.clearOverview();
+			rp.clearReserve();
 			//smp.loadModules();
 			cspp.loadProfile(model);
 			ovp.setProfileData(model);
