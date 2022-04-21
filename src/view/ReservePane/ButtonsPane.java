@@ -1,5 +1,7 @@
 package view.ReservePane;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -17,7 +19,7 @@ public class ButtonsPane extends HBox {
         remove = new Button("Remove");
         confirm = new Button("Confirm");
 
-        confirm.setDisable(true);
+        //confirm.setDisable(true);
         add.setPrefSize(70, 20);
         remove.setPrefSize(70, 20);
         confirm.setPrefSize(70, 20);
@@ -40,4 +42,8 @@ public class ButtonsPane extends HBox {
     public Button getRemove() {
         return remove;
     }
+    public Button getConfirm(){
+        return confirm;
+    }
+
 }

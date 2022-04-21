@@ -9,6 +9,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import model.Module;
 import model.StudentProfile;
 
 public class OverviewPane extends GridPane {
@@ -101,6 +102,21 @@ public class OverviewPane extends GridPane {
         data += "Course: " + courseName;
 
         profile.setText(data);
+    }
+
+    public void setReserveModuleData(StudentProfile profileData){
+        String data = "Reserve modules: \n";
+        data += "=============== \n";
+        for (Module m : profileData.getAllReservedModules()){
+            var modCode = m.getModuleCode();
+            var modName = m.getModuleName();
+            var modCredit = m.getModuleCredits();
+            String modTerm = String.valueOf(m.getDelivery());
+
+            data += "Module code: " + modCode + ", Module name: " + modName + ", \nModule credits: " + modCredit +
+                    ", Delivery: " + modTerm + "\n\n";
+        }
+        reserve.setText(data);
     }
 
     public void clearOverview(){
