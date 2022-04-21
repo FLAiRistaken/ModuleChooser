@@ -17,11 +17,13 @@ import model.Module;
 import model.Schedule;
 import model.StudentProfile;
 
+import java.util.Collection;
+
 public class ReservePane extends Accordion {
-    private ListViewPane unTerm1;
-    private ListViewPane resTerm1;
-    private ListViewPane unTerm2;
-    private ListViewPane resTerm2;
+    private ListViewPane<Module> unTerm1;
+    private ListViewPane<Module> resTerm1;
+    private ListViewPane<Module> unTerm2;
+    private ListViewPane<Module> resTerm2;
     private ButtonsPane btnTerm1;
     private ButtonsPane btnTerm2;
     private TitledPane term1Pane;
@@ -39,8 +41,8 @@ public class ReservePane extends Accordion {
 
         listUnTerm1 = FXCollections.observableArrayList();
         listResTerm1 = FXCollections.observableArrayList();
-        unTerm1 = new ListViewPane(listUnTerm1);
-        resTerm1 = new ListViewPane(listResTerm1);
+        unTerm1 = new ListViewPane<>(listUnTerm1);
+        resTerm1 = new ListViewPane<>(listResTerm1);
         term1Credits = 30;
 
 
@@ -77,8 +79,8 @@ public class ReservePane extends Accordion {
 
         listUnTerm2 = FXCollections.observableArrayList();
         listResTerm2 = FXCollections.observableArrayList();
-        unTerm2 = new ListViewPane(listUnTerm2);
-        resTerm2 = new ListViewPane(listResTerm2);
+        unTerm2 = new ListViewPane<>(listUnTerm2);
+        resTerm2 = new ListViewPane<>(listResTerm2);
         term2Credits = 30;
 
         unTerm2.getLblList().setText("Unselected Term 2 modules");
@@ -123,16 +125,16 @@ public class ReservePane extends Accordion {
         return listResTerm2;
     }
 
-    public ListViewPane getUnTerm1() {
+    public ListViewPane<Module> getUnTerm1() {
         return unTerm1;
     }
-    public ListViewPane getUnTerm2() {
+    public ListViewPane<Module> getUnTerm2() {
         return unTerm2;
     }
-    public ListViewPane getResTerm1() {
+    public ListViewPane<Module> getResTerm1() {
         return resTerm1;
     }
-    public ListViewPane getResTerm2() {
+    public ListViewPane<Module> getResTerm2() {
         return resTerm2;
     }
 
@@ -141,6 +143,14 @@ public class ReservePane extends Accordion {
     }
     public int getTerm2Credits() {
         return term2Credits;
+    }
+
+    public void changePane(int pane){
+        if (pane == 1){
+            this.setExpandedPane(term1Pane);
+        } else {
+            this.setExpandedPane(term2Pane);
+        }
     }
 
     public int getPaneIndex(){
@@ -178,6 +188,14 @@ public class ReservePane extends Accordion {
         }
     }
 
+    public Collection<Module> getSelectedReserveModules(int term){
+        if (term == 1){
+           return getResTerm1().getListView().getItems();
+        } else {
+            return getResTerm2().getListView().getItems();
+        }
+    }
+
     public void addSelectedModule(){
         if (getPaneIndex() == 1){
             if (getTerm1Credits()> 0){
@@ -207,6 +225,8 @@ public class ReservePane extends Accordion {
     }
 
     public void loadModules(StudentProfile profile) {
+        Collection<Module> allCourseModules = profile.getStudentCourse().getAllModulesOnCourse();
+
         for (Module m : profile.getStudentCourse().getAllModulesOnCourse()) {
 
             if (m.getDelivery().equals(Schedule.TERM_1)) {
@@ -218,10 +238,30 @@ public class ReservePane extends Accordion {
                 }
             }
         }
+        if (!profile.getAllReservedModules().isEmpty()){
+            for (Module m : profile.getAllReservedModules()) {
+
+                if (m.getDelivery().equals(Schedule.TERM_1)) {
+                    getListResTerm1().add(m);
+                    creditsModifier(1, m.getModuleCredits());
+                    getListUnTerm1().remove(m);
+                } else if (m.getDelivery().equals(Schedule.TERM_2)) {
+                    getListResTerm2().add(m);
+                    creditsModifier(2, m.getModuleCredits());
+                    getListUnTerm2().remove(m);
+                }
+            }
+        }
+
+
     }
 
     public void addAddModuleHandler(EventHandler<ActionEvent> handler) {
         btnTerm1.getAdd().setOnAction(handler);
         btnTerm2.getAdd().setOnAction(handler);
+    }
+    public void addConfirmModuleHandler(EventHandler<ActionEvent> handler){
+        btnTerm1.getConfirm().setOnAction(handler);
+        btnTerm2.getConfirm().setOnAction(handler);
     }
 }

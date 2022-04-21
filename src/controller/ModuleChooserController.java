@@ -70,6 +70,8 @@ public class ModuleChooserController {
 		mstmb.addAboutHandler(e -> this.alertDialogBuilder(Alert.AlertType.INFORMATION, "About Module Chooser", "Module Chooser", "A module chooser, created by P2593265"));
 
 		rp.addAddModuleHandler(new addReserveModuleHandler());
+		rp.addConfirmModuleHandler(new confirmReserveModuleHandler());
+
 	}
 	
 	//event handler (currently empty), which can be used for creating a profile
@@ -246,6 +248,23 @@ public class ModuleChooserController {
 		}
 	}
 
+	private class confirmReserveModuleHandler implements EventHandler<ActionEvent>{
+		public void handle(ActionEvent e) {
+			if (rp.getPaneIndex() == 1){
+				for (Module m : rp.getSelectedReserveModules(1)){
+					model.addReservedModule(m);
+					rp.changePane(2);
+				}
+			} else {
+				for (Module m : rp.getSelectedReserveModules(2)) {
+					model.addReservedModule(m);
+					ovp.setReserveModuleData(model);
+					view.changeTab(3);
+				}
+			}
+		}
+	}
+
 
 	public void alertDialogBuilder(Alert.AlertType type, String title, String header, String content) {
 		Alert alert = new Alert(type);
@@ -291,8 +310,10 @@ public class ModuleChooserController {
 			//smp.loadModules();
 			cspp.loadProfile(model);
 			ovp.setProfileData(model);
+			ovp.setReserveModuleData(model);
 			smp.loadModules(model);
 			rp.loadModules(model);
+
 
 			view.changeTab(0);
 		}
