@@ -161,30 +161,59 @@ public class ReservePane extends Accordion {
         }
     }
 
-    public Module getSelectedModule(int term){
-        if (term == 1){
-            return ((Module) getUnTerm1().getListView().getSelectionModel().getSelectedItem());
+    public Module getSelectedModule(int term, int unORres){
+        if (unORres == 0){
+            if (term == 1){
+                return getUnTerm1().getListView().getSelectionModel().getSelectedItem();
+            } else {
+                return getUnTerm2().getListView().getSelectionModel().getSelectedItem();
+            }
         } else {
-            return ((Module) getUnTerm2().getListView().getSelectionModel().getSelectedItem());
+            if (term == 1){
+                return getResTerm1().getListView().getSelectionModel().getSelectedItem();
+            } else {
+                return getResTerm2().getListView().getSelectionModel().getSelectedItem();
+            }
         }
     }
 
-    public int getSelectedModuleCredits(int term){
-        if (term == 1){
-            var selectedModule = getSelectedModule(1);
-            return selectedModule.getModuleCredits();
+
+    public int getSelectedModuleCredits(int term, int unORres){
+        if (unORres == 0){
+            if (term == 1){
+                var selectedModule = getSelectedModule(1, 0);
+                return selectedModule.getModuleCredits();
+            } else {
+                var selectedModule = getSelectedModule(2, 0);
+                return selectedModule.getModuleCredits();
+            }
         } else {
-            var selectedModule = getSelectedModule(2);
-            return selectedModule.getModuleCredits();
+            if (term == 1){
+                var selectedModule = getSelectedModule(1, 1);
+                return selectedModule.getModuleCredits();
+            } else {
+                var selectedModule = getSelectedModule(2, 1);
+                return selectedModule.getModuleCredits();
+            }
         }
+
     }
 
-    public void creditsModifier(int term, int credits){
+    public void creditsAddModifier(int term, int credits){
 
         if (term == 1){
             term1Credits = term1Credits - credits;
         } else {
             term2Credits = term2Credits - credits;
+        }
+    }
+
+    public void creditsRemoveModifier(int term, int credits){
+
+        if (term == 1){
+            term1Credits = term1Credits + credits;
+        } else {
+            term2Credits = term2Credits + credits;
         }
     }
 
@@ -199,9 +228,9 @@ public class ReservePane extends Accordion {
     public void addSelectedModule(){
         if (getPaneIndex() == 1){
             if (getTerm1Credits()> 0){
-                getListResTerm1().add(getSelectedModule(1));
-                getListUnTerm1().remove(getSelectedModule(1));
-                creditsModifier(1, getSelectedModuleCredits(1));
+                getListResTerm1().add(getSelectedModule(1, 0));
+                getListUnTerm1().remove(getSelectedModule(1, 0));
+                creditsAddModifier(1, getSelectedModuleCredits(1, 0));
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error Dialogue");
@@ -211,9 +240,9 @@ public class ReservePane extends Accordion {
             }
         } else {
             if (getTerm2Credits()> 0){
-                getListResTerm2().add(getSelectedModule(2));
-                getListUnTerm2().remove(getSelectedModule(2));
-                creditsModifier(2, getSelectedModuleCredits(2));
+                getListResTerm2().add(getSelectedModule(2, 0));
+                getListUnTerm2().remove(getSelectedModule(2, 0));
+                creditsAddModifier(2, getSelectedModuleCredits(2, 0));
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error Dialogue");
@@ -222,6 +251,45 @@ public class ReservePane extends Accordion {
                 alert.showAndWait();
             }
         }
+    }
+
+    public void removeSelectedModule(){
+        if (getPaneIndex() == 1){
+            if (!getListResTerm1().isEmpty()){
+                if (getTerm1Credits() <= 0 || !(getTerm1Credits()>30)){
+                    getListUnTerm1().add(getSelectedModule(1, 1));
+                    creditsRemoveModifier(1, getSelectedModuleCredits(1, 1));
+                    getListResTerm1().remove(getSelectedModule(1, 1));
+                    System.out.println(term1Credits);
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error Dialogue");
+                    alert.setHeaderText("Invalid modules");
+                    alert.setContentText("Cannot remove more modules" + getTerm1Credits());
+                    alert.showAndWait();
+                }
+            }
+        } else {
+            if (!getListResTerm2().isEmpty()){
+                if (getTerm2Credits() <= 0 || !(getTerm2Credits()>30)){
+                    getListUnTerm2().add(getSelectedModule(2, 1));
+                    creditsRemoveModifier(2, getSelectedModuleCredits(2, 1));
+                    getListResTerm2().remove(getSelectedModule(2, 1));
+                    System.out.println(term2Credits);
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error Dialogue");
+                    alert.setHeaderText("Invalid modules");
+                    alert.setContentText("Cannot remove more modules" + getTerm2Credits());
+                    alert.showAndWait();
+                }
+            }
+        }
+    }
+
+    public void clearReserve(){
+        listResTerm1.clear();
+        listResTerm2.clear();
     }
 
     public void loadModules(StudentProfile profile) {
@@ -243,17 +311,15 @@ public class ReservePane extends Accordion {
 
                 if (m.getDelivery().equals(Schedule.TERM_1)) {
                     getListResTerm1().add(m);
-                    creditsModifier(1, m.getModuleCredits());
+                    creditsAddModifier(1, m.getModuleCredits());
                     getListUnTerm1().remove(m);
                 } else if (m.getDelivery().equals(Schedule.TERM_2)) {
                     getListResTerm2().add(m);
-                    creditsModifier(2, m.getModuleCredits());
+                    creditsAddModifier(2, m.getModuleCredits());
                     getListUnTerm2().remove(m);
                 }
             }
         }
-
-
     }
 
     public void addAddModuleHandler(EventHandler<ActionEvent> handler) {
@@ -263,5 +329,9 @@ public class ReservePane extends Accordion {
     public void addConfirmModuleHandler(EventHandler<ActionEvent> handler){
         btnTerm1.getConfirm().setOnAction(handler);
         btnTerm2.getConfirm().setOnAction(handler);
+    }
+    public void addRemoveModuleHandler(EventHandler<ActionEvent> handler){
+        btnTerm1.getRemove().setOnAction(handler);
+        btnTerm2.getRemove().setOnAction(handler);
     }
 }

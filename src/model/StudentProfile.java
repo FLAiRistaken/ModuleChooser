@@ -89,6 +89,10 @@ public class StudentProfile implements Serializable {
 	public void clearReservedModules() {
 		reservedModules.clear();
 	}
+
+	public void removeSelectedReserveModule(Module m){
+		reservedModules.remove(m);
+	}
 	
 	@Override
 	public String toString() {
