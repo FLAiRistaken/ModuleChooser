@@ -79,6 +79,8 @@ public class ModuleChooserController {
 	private class CreateStudentProfileHandler implements EventHandler<ActionEvent> {
 		public void handle(ActionEvent e) {
 			String debug = "";
+			int term1Creds = smp.getTerm1Credits();
+			int term2Creds = smp.getTerm2Credits();
 
 			if (!cspp.validFields()){
 
@@ -99,6 +101,7 @@ public class ModuleChooserController {
 							rp.getListUnTerm1().add(m);
 						} else {
 							smp.getSelModTerm1Contents().add(m);
+							term1Creds = term1Creds + m.getModuleCredits();
 						}
 					} else if (m.getDelivery().equals(Schedule.TERM_2)) {
 						if (m.isMandatory() == false) {
@@ -106,12 +109,16 @@ public class ModuleChooserController {
 							rp.getListUnTerm2().add(m);
 						} else {
 							smp.getSelModTerm2Contents().add(m);
+							term2Creds = term2Creds + m.getModuleCredits();
 						}
 					} else {
 						smp.getSelModYearContents().add(m);
+						term1Creds = term1Creds + (m.getModuleCredits()/2);
+						term2Creds = term2Creds + (m.getModuleCredits()/2);
 					}
 				}
-
+				smp.setTerm1Credits(term1Creds);
+				smp.setTerm2Credits(term2Creds);
 				smp.getTxtDebug().setText(debug);
 				view.changeTab(1);
 			}
@@ -321,7 +328,7 @@ public class ModuleChooserController {
 			cspp.clearStudentProfilePane();
 			ovp.clearOverview();
 			rp.clearReserve();
-			//smp.loadModules();
+			//smp.loadModules(model);
 			cspp.loadProfile(model);
 			ovp.setProfileData(model);
 			ovp.setReserveModuleData(model);
