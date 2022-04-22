@@ -1,5 +1,7 @@
 package view.OverviewPane;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -135,6 +137,18 @@ public class OverviewPane extends GridPane {
         reserve.setText(data);
     }
 
+    public TextArea getProfile() {
+        return profile;
+    }
+
+    public TextArea getSelected() {
+        return selected;
+    }
+
+    public TextArea getReserve() {
+        return reserve;
+    }
+
     public void clearProfile(){
         profile.clear();
     }
@@ -149,5 +163,9 @@ public class OverviewPane extends GridPane {
         profile.clear();
         selected.clear();
         reserve.clear();
+    }
+
+    public void addSaveOverviewHandler(EventHandler<ActionEvent> handler) {
+        btnSave.setOnAction(handler);
     }
 }

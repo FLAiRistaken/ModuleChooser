@@ -79,6 +79,8 @@ public class ModuleChooserController {
 		smp.addResetModuleHandler(new resetSelectModuleHandler());
 		smp.addSubmitModuleHandler(new submitSelectModuleHandler());
 
+		ovp.addSaveOverviewHandler(new saveOverviewHandler());
+
 	}
 	
 	//event handler (currently empty), which can be used for creating a profile
@@ -415,6 +417,26 @@ public class ModuleChooserController {
 					ovp.setReserveModuleData(model);
 					view.changeTab(3);
 				}
+			}
+		}
+	}
+
+	private class saveOverviewHandler implements EventHandler<ActionEvent>{
+		public void handle(ActionEvent e) {
+			String data = "|||||| Saved Overview |||||| \n\n";
+
+			data += ovp.getProfile().getText() + "\n";
+			data += "|||=======================================================================||| \n\n";
+			data += ovp.getSelected().getText() + "\n";
+			data += "|||=======================================================================||| \n\n";
+			data += ovp.getReserve().getText() + "\n";
+			data += "|||=======================================================================||| \n\n";
+
+			try (PrintWriter outOVP = new PrintWriter("savedOverview.txt")){
+				outOVP.println(data);
+				alertDialogBuilder(Alert.AlertType.INFORMATION, "Information Dialog", "Save successful!", "Overview saved to savedOverview.txt");
+			} catch (FileNotFoundException ex) {
+				alertDialogBuilder(Alert.AlertType.ERROR, "Error", "Error saving! :(", "There was an error saving the overview.");
 			}
 		}
 	}
