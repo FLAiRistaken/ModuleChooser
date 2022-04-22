@@ -3,6 +3,7 @@ package controller;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import model.Course;
 import model.Schedule;
 import model.Module;
@@ -72,6 +73,9 @@ public class ModuleChooserController {
 		rp.addAddModuleHandler(new addReserveModuleHandler());
 		rp.addConfirmModuleHandler(new confirmReserveModuleHandler());
 		rp.addRemoveModuleHandler(new removeReserveModuleHandler());
+
+		smp.addAddModuleHandler(new addSelectModuleHandler());
+		smp.addRemoveModuleHandler(new removeSelectModuleHandler());
 
 	}
 	
@@ -249,6 +253,88 @@ public class ModuleChooserController {
 		cspp.getTxtDebug().setText(debug);
 		return courses;
 	}
+
+	public void getButton(ActionEvent event){
+		Button sourceButton = (Button) event.getSource();
+
+	}
+
+	private class addSelectModuleHandler implements EventHandler<ActionEvent>{
+		public void handle(ActionEvent e) {
+			String s = e.getSource().toString();
+			s = s.substring(s.indexOf("=")+ 1);
+			s = s.substring(0, s.indexOf(","));
+			if (s.equals("term1Add")){
+				if (smp.getTerm1Credits() < 60){
+					smp.setTerm1Credits(smp.getTerm1Credits() + smp.getUnTerm1SelectedModule().getModuleCredits());
+					smp.getSelModTerm1Contents().add(smp.getUnTerm1SelectedModule());
+					smp.getUnModTerm1Contents().remove(smp.getUnTerm1SelectedModule());
+				} else {
+					alertDialogBuilder(Alert.AlertType.ERROR, "Error Dialogue",
+							"Invalid modules", "Module limit for term 1 has been reached");
+				}
+			} else if (s.equals("term2Add")) {
+				if (smp.getTerm2Credits() < 60){
+					smp.setTerm2Credits(smp.getTerm2Credits() + smp.getUnTerm2SelectedModule().getModuleCredits());
+					smp.getSelModTerm2Contents().add(smp.getUnTerm2SelectedModule());
+					smp.getUnModTerm2Contents().remove(smp.getUnTerm2SelectedModule());
+				} else {
+					alertDialogBuilder(Alert.AlertType.ERROR, "Error Dialogue",
+							"Invalid modules", "Module limit for term 2 has been reached");
+				}
+			}
+		}
+	}
+
+	private class removeSelectModuleHandler implements EventHandler<ActionEvent>{
+		public void handle(ActionEvent e){
+			String s = e.getSource().toString();
+			s = s.substring(s.indexOf("=")+ 1);
+			s = s.substring(0, s.indexOf(","));
+			System.out.println(s);
+			if (s.equals("term1Rem")){
+				if (!smp.getSelModTerm1Contents().isEmpty()){
+					if (!smp.getSelTerm1SelectedModule().isMandatory()){
+						if(smp.getTerm1Credits() > 0 || !(smp.getTerm1Credits() < 0)){
+							smp.setTerm1Credits(smp.getTerm1Credits() - smp.getSelTerm1SelectedModule().getModuleCredits());
+							smp.getUnModTerm1Contents().add(smp.getSelTerm1SelectedModule());
+							smp.getSelModTerm1Contents().remove(smp.getSelTerm1SelectedModule());
+						} else {
+							alertDialogBuilder(Alert.AlertType.ERROR, "Error Dialogue",
+									"Invalid modules", "Cannot remove further modules; credit minimum reached.");
+						}
+					} else {
+						alertDialogBuilder(Alert.AlertType.ERROR, "Error Dialogue",
+								"Invalid modules", "Cannot remove mandatory modules.");
+					}
+				} else {
+					alertDialogBuilder(Alert.AlertType.ERROR, "Error Dialogue",
+							"List empty", "The list is empty");
+				}
+			} else if (s.equals("term2Rem")){
+				if (!smp.getSelModTerm2Contents().isEmpty()){
+					if (!smp.getSelTerm2SelectedModule().isMandatory()){
+						if(smp.getTerm2Credits() > 0 || !(smp.getTerm2Credits() < 0)){
+							smp.setTerm2Credits(smp.getTerm2Credits() - smp.getSelTerm2SelectedModule().getModuleCredits());
+							smp.getUnModTerm2Contents().add(smp.getSelTerm2SelectedModule());
+							smp.getSelModTerm2Contents().remove(smp.getSelTerm2SelectedModule());
+						} else {
+							alertDialogBuilder(Alert.AlertType.ERROR, "Error Dialogue",
+									"Invalid modules", "Cannot remove further modules; credit minimum reached.");
+						}
+					} else {
+						alertDialogBuilder(Alert.AlertType.ERROR, "Error Dialogue",
+								"Invalid modules", "Cannot remove mandatory modules.");
+					}
+				} else {
+					alertDialogBuilder(Alert.AlertType.ERROR, "Error Dialogue",
+							"List empty", "The list is empty.");
+				}
+
+			}
+		}
+	}
+
 
 	private class addReserveModuleHandler implements EventHandler<ActionEvent>  {
 		public void handle(ActionEvent e) {
