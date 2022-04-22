@@ -312,31 +312,37 @@ public class ModuleChooserController {
 
 	private class LoadMenuHandler implements EventHandler<ActionEvent>{
 		public void handle(ActionEvent e){
-			try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("studentProfile.dat"))){
+			File f = new File("studentProfile.dat");
+			if (f.exists()){
+				try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("studentProfile.dat"))){
 
-				model = (StudentProfile) ois.readObject();
+					model = (StudentProfile) ois.readObject();
 
-				alertDialogBuilder(Alert.AlertType.INFORMATION, "Information Dialog", "Load successful!", "Student profile loaded from studentProfile.dat");
+					alertDialogBuilder(Alert.AlertType.INFORMATION, "Information Dialog", "Load successful!", "Student profile loaded from studentProfile.dat");
+				}
+				catch (IOException ioExcep){
+					alertDialogBuilder(Alert.AlertType.ERROR, "Error", "Error loading! :(", "There was an error loading the student profile.");
+				}
+				catch (ClassNotFoundException c) {
+					alertDialogBuilder(Alert.AlertType.ERROR, "Error", "Error loading! :(", "Class not found.");
+				}
+
+				cspp.clearStudentProfilePane();
+				ovp.clearOverview();
+				rp.clearReserve();
+				//smp.loadModules(model);
+				cspp.loadProfile(model);
+				ovp.setProfileData(model);
+				ovp.setReserveModuleData(model);
+				smp.loadModules(model);
+				rp.loadModules(model);
+
+
+				view.changeTab(0);
+			} else {
+				alertDialogBuilder(Alert.AlertType.ERROR, "Error", "Error loading! :(", "No student profile was found.");
 			}
-			catch (IOException ioExcep){
-				alertDialogBuilder(Alert.AlertType.ERROR, "Error", "Error loading! :(", "There was an error loading the student profile.");
-			}
-			catch (ClassNotFoundException c) {
-				alertDialogBuilder(Alert.AlertType.ERROR, "Error", "Error loading! :(", "Class not found.");
-			}
 
-			cspp.clearStudentProfilePane();
-			ovp.clearOverview();
-			rp.clearReserve();
-			//smp.loadModules(model);
-			cspp.loadProfile(model);
-			ovp.setProfileData(model);
-			ovp.setReserveModuleData(model);
-			smp.loadModules(model);
-			rp.loadModules(model);
-
-
-			view.changeTab(0);
 		}
 	}
 
