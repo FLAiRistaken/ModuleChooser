@@ -22,6 +22,7 @@ import model.Schedule;
 import model.StudentProfile;
 
 import javax.security.auth.callback.LanguageCallback;
+import java.util.Collection;
 
 public class SelectModulesPane extends GridPane {
 
@@ -187,15 +188,32 @@ public class SelectModulesPane extends GridPane {
     }
 
     public void loadModules(StudentProfile profile){
-        for (Module m : profile.getStudentCourse().getAllModulesOnCourse()){
-
+        Collection<Module> allCourseModule = profile.getStudentCourse().getAllModulesOnCourse();
+        if (!profile.getAllSelectedModules().isEmpty()){
+            for (Module m : profile.getAllSelectedModules()){
+                if (m.getDelivery().equals(Schedule.TERM_1)){
+                    getSelModTerm1Contents().add(m);
+                    allCourseModule.remove(m);
+                    term1Credits = term1Credits + m.getModuleCredits();
+                } else if (m.getDelivery().equals(Schedule.TERM_2)) {
+                    getSelModTerm2Contents().add(m);
+                    allCourseModule.remove(m);
+                    term2Credits = term2Credits + m.getModuleCredits();
+                } else {
+                    getSelModYearContents().add(m);
+                    term1Credits = term1Credits + (m.getModuleCredits()/2);
+                    term2Credits = term2Credits + (m.getModuleCredits()/2);
+                    allCourseModule.remove(m);
+                }
+            }
+        }
+        for (Module m : allCourseModule){
             if (m.getDelivery().equals(Schedule.TERM_1)){
                 if(m.isMandatory() == false){
                     getUnModTerm1Contents().add(m);
                 } else {
                     getSelModTerm1Contents().add(m);
                     term1Credits = term1Credits + m.getModuleCredits();
-                    //txtT1Credits.setText(String.valueOf(term1Credits));
                 }
             } else if (m.getDelivery().equals(Schedule.TERM_2)) {
                 if (m.isMandatory() == false) {
@@ -203,7 +221,6 @@ public class SelectModulesPane extends GridPane {
                 } else {
                     getSelModTerm2Contents().add(m);
                     term2Credits = term2Credits + m.getModuleCredits();
-                    //xtT2Credits.setText(String.valueOf(term2Credits));
                 }
             } else {
                 getSelModYearContents().add(m);
@@ -272,6 +289,13 @@ public class SelectModulesPane extends GridPane {
 
 
     public void clearSMP(){
+        selModYear.clear();
+        selModTerm1.clear();
+        selModTerm2.clear();
+        unModTerm1.clear();
+        unModTerm2.clear();
+        term1Credits = 0;
+        term2Credits = 0;
 
     }
 
@@ -283,5 +307,13 @@ public class SelectModulesPane extends GridPane {
     public void addRemoveModuleHandler(EventHandler<ActionEvent> handler){
         btnTerm1.getRemove().setOnAction(handler);
         btnTerm2.getRemove().setOnAction(handler);
+    }
+
+    public void addResetModuleHandler(EventHandler<ActionEvent> handler){
+        btnReset.setOnAction(handler);
+    }
+
+    public void addSubmitModuleHandler(EventHandler<ActionEvent> handler){
+        btnSubmit.setOnAction(handler);
     }
 }

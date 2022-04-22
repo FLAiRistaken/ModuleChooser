@@ -104,6 +104,22 @@ public class OverviewPane extends GridPane {
         profile.setText(data);
     }
 
+    public void setSelectedModuleData(StudentProfile profileData){
+        String data = "Selected modules: \n";
+        data += "=============== \n";
+
+        for (Module m : profileData.getAllSelectedModules()){
+            var modCode = m.getModuleCode();
+            var modName = m.getModuleName();
+            var modCredit = m.getModuleCredits();
+            String modTerm = String.valueOf(m.getDelivery());
+
+            data += "Module code: " + modCode + ", Module name: " + modName + ", \nModule credits: " + modCredit +
+                    ", Delivery: " + modTerm + "\n\n";
+        }
+        selected.setText(data);
+    }
+
     public void setReserveModuleData(StudentProfile profileData){
         String data = "Reserve modules: \n";
         data += "=============== \n";
