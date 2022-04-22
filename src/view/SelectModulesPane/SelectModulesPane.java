@@ -2,6 +2,8 @@ package view.SelectModulesPane;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -46,7 +48,11 @@ public class SelectModulesPane extends GridPane {
         unTerm1.getListView().getSelectionModel();
 
         btnTerm1 = new ButtonsPane();
+        btnTerm1.getAdd().setId("term1Add");
+        btnTerm1.getRemove().setId("term1Rem");
         btnTerm2 = new ButtonsPane();
+        btnTerm2.getAdd().setId("term2Add");
+        btnTerm2.getRemove().setId("term2Rem");
 
         lblT1Credits = new Label("Current term 1 credits: ");
         txtT1Credits = new TextField("0");
@@ -91,7 +97,8 @@ public class SelectModulesPane extends GridPane {
         txtT2Credits.setEditable(false);
 
         selYear.prefWidthProperty().bind(this.widthProperty());
-        selYear.prefHeightProperty().bind(this.heightProperty());
+        selYear.setPrefHeight(200);
+        selYear.setMinHeight(100);
         selYear.getLblList().setText("Selected Year Long modules");
         selTerm1.getLblList().setText("Selected Term 1 modules");
         selTerm2.getLblList().setText("Selected Term 2 modules");
@@ -116,7 +123,9 @@ public class SelectModulesPane extends GridPane {
         t2creditsHbox.setAlignment(Pos.CENTER);
 
         btnReset = new Button("Reset");
+        btnReset.setId("btnReset");
         btnSubmit = new Button("Submit");
+        btnSubmit.setId("btnSubmit");
 
         btnReset.setPrefSize(70, 20);
         btnSubmit.setPrefSize(70, 20);
@@ -245,7 +254,34 @@ public class SelectModulesPane extends GridPane {
         return getSelTerm2().getListView().getSelectionModel().getSelectedItem();
     }
 
+    public ButtonsPane getBtnTerm1() {
+        return btnTerm1;
+    }
+
+    public ButtonsPane getBtnTerm2() {
+        return btnTerm2;
+    }
+
+    public Button getBtnReset() {
+        return btnReset;
+    }
+
+    public Button getBtnSubmit() {
+        return btnSubmit;
+    }
+
+
     public void clearSMP(){
 
+    }
+
+    public void addAddModuleHandler(EventHandler<ActionEvent> handler){
+        btnTerm1.getAdd().setOnAction(handler);
+        btnTerm2.getAdd().setOnAction(handler);
+    }
+
+    public void addRemoveModuleHandler(EventHandler<ActionEvent> handler){
+        btnTerm1.getRemove().setOnAction(handler);
+        btnTerm2.getRemove().setOnAction(handler);
     }
 }
