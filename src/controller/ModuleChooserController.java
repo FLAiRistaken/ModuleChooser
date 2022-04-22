@@ -76,6 +76,8 @@ public class ModuleChooserController {
 
 		smp.addAddModuleHandler(new addSelectModuleHandler());
 		smp.addRemoveModuleHandler(new removeSelectModuleHandler());
+		smp.addResetModuleHandler(new resetSelectModuleHandler());
+		smp.addSubmitModuleHandler(new submitSelectModuleHandler());
 
 	}
 	
@@ -83,14 +85,17 @@ public class ModuleChooserController {
 	private class CreateStudentProfileHandler implements EventHandler<ActionEvent> {
 		public void handle(ActionEvent e) {
 			String debug = "";
-			int term1Creds = smp.getTerm1Credits();
-			int term2Creds = smp.getTerm2Credits();
+			int term1Creds = 0;
+			int term2Creds = 0;
 
 			if (!cspp.validFields()){
 
 			} else {
 				model = cspp.getStudentProfile();
 
+				rp.clearUnReserve();
+				rp.clearReserve();
+				smp.clearSMP();
 				ovp.clearOverview();
 				ovp.setProfileData(model);
 				debug += model.getStudentCourse() + "\n";
@@ -102,7 +107,6 @@ public class ModuleChooserController {
 					if (m.getDelivery().equals(Schedule.TERM_1)){
 						if(m.isMandatory() == false){
 							smp.getUnModTerm1Contents().add(m);
-							rp.getListUnTerm1().add(m);
 						} else {
 							smp.getSelModTerm1Contents().add(m);
 							term1Creds = term1Creds + m.getModuleCredits();
@@ -110,7 +114,6 @@ public class ModuleChooserController {
 					} else if (m.getDelivery().equals(Schedule.TERM_2)) {
 						if (m.isMandatory() == false) {
 							smp.getUnModTerm2Contents().add(m);
-							rp.getListUnTerm2().add(m);
 						} else {
 							smp.getSelModTerm2Contents().add(m);
 							term2Creds = term2Creds + m.getModuleCredits();
@@ -254,10 +257,6 @@ public class ModuleChooserController {
 		return courses;
 	}
 
-	public void getButton(ActionEvent event){
-		Button sourceButton = (Button) event.getSource();
-
-	}
 
 	private class addSelectModuleHandler implements EventHandler<ActionEvent>{
 		public void handle(ActionEvent e) {
@@ -293,7 +292,7 @@ public class ModuleChooserController {
 			s = s.substring(0, s.indexOf(","));
 			System.out.println(s);
 			if (s.equals("term1Rem")){
-				if (!smp.getSelModTerm1Contents().isEmpty()){
+				if (!(smp.getSelTerm1SelectedModule() == null)){
 					if (!smp.getSelTerm1SelectedModule().isMandatory()){
 						if(smp.getTerm1Credits() > 0 || !(smp.getTerm1Credits() < 0)){
 							smp.setTerm1Credits(smp.getTerm1Credits() - smp.getSelTerm1SelectedModule().getModuleCredits());
@@ -309,10 +308,10 @@ public class ModuleChooserController {
 					}
 				} else {
 					alertDialogBuilder(Alert.AlertType.ERROR, "Error Dialogue",
-							"List empty", "The list is empty");
+							"Invalid modules", "Selected module is null.");
 				}
 			} else if (s.equals("term2Rem")){
-				if (!smp.getSelModTerm2Contents().isEmpty()){
+				if (!(smp.getSelTerm2SelectedModule() == null)){
 					if (!smp.getSelTerm2SelectedModule().isMandatory()){
 						if(smp.getTerm2Credits() > 0 || !(smp.getTerm2Credits() < 0)){
 							smp.setTerm2Credits(smp.getTerm2Credits() - smp.getSelTerm2SelectedModule().getModuleCredits());
@@ -328,10 +327,59 @@ public class ModuleChooserController {
 					}
 				} else {
 					alertDialogBuilder(Alert.AlertType.ERROR, "Error Dialogue",
-							"List empty", "The list is empty.");
+							"Invalid modules", "Selected module is null.");
 				}
 
 			}
+		}
+	}
+
+	private class resetSelectModuleHandler implements EventHandler<ActionEvent>{
+		public void handle(ActionEvent e){
+			smp.clearSMP();
+			for (Module m : model.getStudentCourse().getAllModulesOnCourse()){
+				if (m.getDelivery().equals(Schedule.TERM_1)){
+					if(m.isMandatory() == false){
+						smp.getUnModTerm1Contents().add(m);
+					} else {
+						smp.getSelModTerm1Contents().add(m);
+						smp.setTerm1Credits(smp.getTerm1Credits() + m.getModuleCredits());
+						//txtT1Credits.setText(String.valueOf(term1Credits));
+					}
+				} else if (m.getDelivery().equals(Schedule.TERM_2)) {
+					if (m.isMandatory() == false) {
+						smp.getUnModTerm2Contents().add(m);
+					} else {
+						smp.getSelModTerm2Contents().add(m);
+						smp.setTerm2Credits(smp.getTerm2Credits() + m.getModuleCredits());
+						//xtT2Credits.setText(String.valueOf(term2Credits));
+					}
+				} else {
+					smp.getSelModYearContents().add(m);
+					smp.setTerm1Credits(smp.getTerm1Credits() + m.getModuleCredits()/2);
+					smp.setTerm2Credits(smp.getTerm2Credits() + m.getModuleCredits()/2);
+				}
+			}
+		}
+
+	}
+
+	private class submitSelectModuleHandler implements  EventHandler<ActionEvent>{
+		public void handle(ActionEvent e){
+			for (Module m : smp.getSelModYearContents()){
+				model.addSelectedModule(m);
+			}
+			for (Module m : smp.getSelModTerm1Contents()){
+				model.addSelectedModule(m);
+			}
+			for (Module m : smp.getSelModTerm2Contents()){
+				model.addSelectedModule(m);
+			}
+			rp.clearUnReserve();
+			rp.clearReserve();
+			rp.loadModules(model);
+			ovp.setSelectedModuleData(model);
+			view.changeTab(2);
 		}
 	}
 
@@ -415,11 +463,13 @@ public class ModuleChooserController {
 
 				cspp.clearStudentProfilePane();
 				ovp.clearOverview();
+				rp.clearUnReserve();
 				rp.clearReserve();
-				//smp.loadModules(model);
+				smp.clearSMP();
 				cspp.loadProfile(model);
 				ovp.setProfileData(model);
 				ovp.setReserveModuleData(model);
+				ovp.setSelectedModuleData(model);
 				smp.loadModules(model);
 				rp.loadModules(model);
 

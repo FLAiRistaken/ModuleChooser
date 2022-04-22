@@ -291,11 +291,19 @@ public class ReservePane extends Accordion {
         listResTerm1.clear();
         listResTerm2.clear();
     }
+    public void clearUnReserve(){
+        listUnTerm1.clear();
+        listUnTerm2.clear();
+    }
 
     public void loadModules(StudentProfile profile) {
         Collection<Module> allCourseModules = profile.getStudentCourse().getAllModulesOnCourse();
 
-        for (Module m : profile.getStudentCourse().getAllModulesOnCourse()) {
+        for (Module m : profile.getAllSelectedModules()){
+            allCourseModules.remove(m);
+        }
+
+        for (Module m : allCourseModules) {
 
             if (m.getDelivery().equals(Schedule.TERM_1)) {
                 if (m.isMandatory() == false) {
