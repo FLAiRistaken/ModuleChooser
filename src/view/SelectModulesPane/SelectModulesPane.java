@@ -22,6 +22,7 @@ import model.Schedule;
 import model.StudentProfile;
 
 import javax.security.auth.callback.LanguageCallback;
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class SelectModulesPane extends GridPane {
@@ -188,7 +189,8 @@ public class SelectModulesPane extends GridPane {
     }
 
     public void loadModules(StudentProfile profile){
-        Collection<Module> allCourseModule = profile.getStudentCourse().getAllModulesOnCourse();
+        Collection<Module> allCourseModule = new ArrayList<Module>(profile.getStudentCourse().getAllModulesOnCourse());
+        System.out.println(profile);
         if (!profile.getAllSelectedModules().isEmpty()){
             for (Module m : profile.getAllSelectedModules()){
                 if (m.getDelivery().equals(Schedule.TERM_1)){

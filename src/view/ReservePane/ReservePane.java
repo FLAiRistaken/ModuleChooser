@@ -17,6 +17,7 @@ import model.Module;
 import model.Schedule;
 import model.StudentProfile;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class ReservePane extends Accordion {
@@ -295,9 +296,14 @@ public class ReservePane extends Accordion {
         listUnTerm1.clear();
         listUnTerm2.clear();
     }
+    public void clearReservePaneCredits(){
+        term1Credits = 30;
+        term2Credits = 30;
+    }
 
     public void loadModules(StudentProfile profile) {
-        Collection<Module> allCourseModules = profile.getStudentCourse().getAllModulesOnCourse();
+
+        Collection<Module> allCourseModules = new ArrayList<Module>(profile.getStudentCourse().getAllModulesOnCourse());
 
         for (Module m : profile.getAllSelectedModules()){
             allCourseModules.remove(m);
