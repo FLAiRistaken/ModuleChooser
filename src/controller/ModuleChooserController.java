@@ -86,7 +86,6 @@ public class ModuleChooserController {
 	//event handler (currently empty), which can be used for creating a profile
 	private class CreateStudentProfileHandler implements EventHandler<ActionEvent> {
 		public void handle(ActionEvent e) {
-			String debug = "";
 			int term1Creds = 0;
 			int term2Creds = 0;
 
@@ -100,8 +99,6 @@ public class ModuleChooserController {
 				smp.clearSMP();
 				ovp.clearOverview();
 				ovp.setProfileData(model);
-				debug += model.getStudentCourse() + "\n";
-				debug += model.getStudentCourse().getAllModulesOnCourse() + "\n";
 
 
 				for (Module m : model.getStudentCourse().getAllModulesOnCourse()){
@@ -128,7 +125,6 @@ public class ModuleChooserController {
 				}
 				smp.setTerm1Credits(term1Creds);
 				smp.setTerm2Credits(term2Creds);
-				smp.getTxtDebug().setText(debug);
 				view.changeTab(1);
 			}
 		}
@@ -147,9 +143,7 @@ public class ModuleChooserController {
 
 		course = new Course(courseID);
 
-		String debug = "";
 		while (!(curLine.equals("end"))){
-			String courseName = curLineSplit[0];
 			String moduleCode = curLineSplit[1];
 			String moduleName = curLineSplit[2];
 			int moduleCredits = Integer.parseInt(curLineSplit[3]);
@@ -278,7 +272,6 @@ public class ModuleChooserController {
 					} else {
 						smp.getSelModTerm1Contents().add(m);
 						smp.setTerm1Credits(smp.getTerm1Credits() + m.getModuleCredits());
-						//txtT1Credits.setText(String.valueOf(term1Credits));
 					}
 				} else if (m.getDelivery().equals(Schedule.TERM_2)) {
 					if (m.isMandatory() == false) {
@@ -286,7 +279,6 @@ public class ModuleChooserController {
 					} else {
 						smp.getSelModTerm2Contents().add(m);
 						smp.setTerm2Credits(smp.getTerm2Credits() + m.getModuleCredits());
-						//xtT2Credits.setText(String.valueOf(term2Credits));
 					}
 				} else {
 					smp.getSelModYearContents().add(m);
@@ -300,6 +292,9 @@ public class ModuleChooserController {
 
 	private class submitSelectModuleHandler implements  EventHandler<ActionEvent>{
 		public void handle(ActionEvent e){
+			rp.clearUnReserve();
+			rp.clearReserve();
+			rp.clearReservePaneCredits();
 			for (Module m : smp.getSelModYearContents()){
 				model.addSelectedModule(m);
 			}
@@ -309,10 +304,12 @@ public class ModuleChooserController {
 			for (Module m : smp.getSelModTerm2Contents()){
 				model.addSelectedModule(m);
 			}
-			rp.clearUnReserve();
-			rp.clearReserve();
-			rp.clearReservePaneCredits();
-			rp.loadModules(model);
+			for (Module m : smp.getUnModTerm1Contents()){
+				rp.getListUnTerm1().add(m);
+			}
+			for (Module m : smp.getUnModTerm2Contents()){
+				rp.getListUnTerm2().add(m);
+			}
 			ovp.setSelectedModuleData(model);
 			view.changeTab(2);
 		}
@@ -321,7 +318,32 @@ public class ModuleChooserController {
 
 	private class addReserveModuleHandler implements EventHandler<ActionEvent>  {
 		public void handle(ActionEvent e) {
-			rp.addSelectedModule();
+			//rp.addSelectedModule();
+			if (rp.getPaneIndex() == 1){
+				if (rp.getTerm1Credits()> 0){
+					rp.getListResTerm1().add(rp.getSelectedModule(1, 0));
+					rp.getListUnTerm1().remove(rp.getSelectedModule(1, 0));
+					rp.creditsAddModifier(1, rp.getSelectedModuleCredits(1, 0));
+				} else {
+					Alert alert = new Alert(Alert.AlertType.ERROR);
+					alert.setTitle("Error Dialogue");
+					alert.setHeaderText("Invalid modules");
+					alert.setContentText("Reserve module limit has already been reached.");
+					alert.showAndWait();
+				}
+			} else {
+				if (rp.getTerm2Credits()> 0){
+					rp.getListResTerm2().add(rp.getSelectedModule(2, 0));
+					rp.getListUnTerm2().remove(rp.getSelectedModule(2, 0));
+					rp.creditsAddModifier(2, rp.getSelectedModuleCredits(2, 0));
+				} else {
+					Alert alert = new Alert(Alert.AlertType.ERROR);
+					alert.setTitle("Error Dialogue");
+					alert.setHeaderText("Invalid modules");
+					alert.setContentText("Reserve module limit has already been reached.");
+					alert.showAndWait();
+				}
+			}
 		}
 	}
 
@@ -332,7 +354,36 @@ public class ModuleChooserController {
 			} else {
 				model.removeSelectedReserveModule(rp.getSelectedModule(2, 1));
 			}
-			rp.removeSelectedModule();
+			//rp.removeSelectedModule();
+			if (rp.getPaneIndex() == 1){
+				if (!rp.getListResTerm1().isEmpty()){
+					if (rp.getTerm1Credits() <= 0 || !(rp.getTerm1Credits()>30)){
+						rp.getListUnTerm1().add(rp.getSelectedModule(1, 1));
+						rp.creditsRemoveModifier(1, rp.getSelectedModuleCredits(1, 1));
+						rp.getListResTerm1().remove(rp.getSelectedModule(1, 1));
+					} else {
+						Alert alert = new Alert(Alert.AlertType.ERROR);
+						alert.setTitle("Error Dialogue");
+						alert.setHeaderText("Invalid modules");
+						alert.setContentText("Cannot remove more modules" + rp.getTerm1Credits());
+						alert.showAndWait();
+					}
+				}
+			} else {
+				if (!rp.getListResTerm2().isEmpty()){
+					if (rp.getTerm2Credits() <= 0 || !(rp.getTerm2Credits()>30)){
+						rp.getListUnTerm2().add(rp.getSelectedModule(2, 1));
+						rp.creditsRemoveModifier(2, rp.getSelectedModuleCredits(2, 1));
+						rp.getListResTerm2().remove(rp.getSelectedModule(2, 1));
+					} else {
+						Alert alert = new Alert(Alert.AlertType.ERROR);
+						alert.setTitle("Error Dialogue");
+						alert.setHeaderText("Invalid modules");
+						alert.setContentText("Cannot remove more modules" + rp.getTerm2Credits());
+						alert.showAndWait();
+					}
+				}
+			}
 		}
 	}
 

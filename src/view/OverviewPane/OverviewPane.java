@@ -20,7 +20,6 @@ public class OverviewPane extends GridPane {
     private TextArea selected;
     private TextArea reserve;
     private Button btnSave;
-    private Label lblTest;
 
     public OverviewPane(){
 
@@ -81,7 +80,6 @@ public class OverviewPane extends GridPane {
         GridPane.setHgrow(reserve, Priority.ALWAYS);*/
 
 
-        gridLinesVisibleProperty().set(true);
 
         this.add(vbox, 0, 1);
         this.add(hbox, 0, 2);
