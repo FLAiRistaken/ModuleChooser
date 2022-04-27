@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class ListViewPane<Module> extends VBox {
@@ -16,6 +17,7 @@ public class ListViewPane<Module> extends VBox {
 
     public ListViewPane(ObservableList<Module> list){
         this.setPadding(new Insets(15));
+        this.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
         listViewBox = new ListView<Module>(list);
         lblList = new Label();
@@ -24,6 +26,7 @@ public class ListViewPane<Module> extends VBox {
         listViewBox.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
         this.getChildren().addAll(lblList, listViewBox);
+        VBox.setVgrow(listViewBox, Priority.ALWAYS);
     }
 
     public Label getLblList(){

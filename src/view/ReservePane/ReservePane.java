@@ -7,11 +7,8 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Accordion;
-import javafx.scene.control.Alert;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import model.Module;
 import model.Schedule;
@@ -29,7 +26,6 @@ public class ReservePane extends Accordion {
     private ButtonsPane btnTerm2;
     private TitledPane term1Pane;
     private TitledPane term2Pane;
-    private Accordion accordion;
 
     private ObservableList<Module> listUnTerm1, listUnTerm2, listResTerm1, listResTerm2;
 
@@ -50,10 +46,6 @@ public class ReservePane extends Accordion {
         unTerm1.getLblList().setText("Unselected Term 1 modules");
         resTerm1.getLblList().setText("Reserved Term 1 modules");
 
-       /* HBox term1Hbox = new HBox(unTerm1, resTerm1);
-        term1Hbox.setSpacing(10);
-        term1Hbox.setPadding(new Insets(20));
-        term1Hbox.setAlignment(Pos.CENTER);*/
         GridPane term1GridPane = new GridPane();
 
         term1GridPane.add(unTerm1, 0, 1);
@@ -62,7 +54,6 @@ public class ReservePane extends Accordion {
         term1GridPane.setPadding(new Insets(20));
         term1GridPane.setAlignment(Pos.CENTER);
 
-        term1GridPane.setGridLinesVisible(true);
 
         unTerm1.prefWidthProperty().bind(this.widthProperty());
         resTerm1.prefWidthProperty().bind(this.widthProperty());
@@ -87,22 +78,23 @@ public class ReservePane extends Accordion {
         unTerm2.getLblList().setText("Unselected Term 2 modules");
         resTerm2.getLblList().setText("Reserved Term 2 modules");
 
-        HBox term2Hbox = new HBox(unTerm2, resTerm2);
-        term2Hbox.setSpacing(10);
-        term2Hbox.setPadding(new Insets(20));
-        term2Hbox.setAlignment(Pos.CENTER);
+        GridPane term2GridPane = new GridPane();
+        term2GridPane.add(unTerm2, 0, 1);
+        term2GridPane.add(resTerm2, 1, 1);
+        term2GridPane.setPadding(new Insets(20));
+        term2GridPane.setAlignment(Pos.CENTER);
 
         unTerm2.prefWidthProperty().bind(this.widthProperty());
         resTerm2.prefWidthProperty().bind(this.widthProperty());
-        unTerm2.prefHeightProperty().bind(term2Hbox.heightProperty());
-        resTerm2.prefHeightProperty().bind(term2Hbox.heightProperty());
+        unTerm2.prefHeightProperty().bind(term2GridPane.heightProperty());
+        resTerm2.prefHeightProperty().bind(term2GridPane.heightProperty());
 
         btnTerm2 = new ButtonsPane();
         btnTerm2.getLblButton().setText("Reserve 30 credits worth of term 2 modules");
         btnTerm2.setPadding(new Insets(20));
         btnTerm2.setAlignment(Pos.CENTER);
 
-        VBox term2Vbox = new VBox(term2Hbox, btnTerm2);
+        VBox term2Vbox = new VBox(term2GridPane, btnTerm2);
 
         term2Pane = new TitledPane("Term 2 modules", term2Vbox);
 
@@ -226,67 +218,6 @@ public class ReservePane extends Accordion {
         }
     }
 
-    public void addSelectedModule(){
-        if (getPaneIndex() == 1){
-            if (getTerm1Credits()> 0){
-                getListResTerm1().add(getSelectedModule(1, 0));
-                getListUnTerm1().remove(getSelectedModule(1, 0));
-                creditsAddModifier(1, getSelectedModuleCredits(1, 0));
-            } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error Dialogue");
-                alert.setHeaderText("Invalid modules");
-                alert.setContentText("Reserve module limit has already been reached.");
-                alert.showAndWait();
-            }
-        } else {
-            if (getTerm2Credits()> 0){
-                getListResTerm2().add(getSelectedModule(2, 0));
-                getListUnTerm2().remove(getSelectedModule(2, 0));
-                creditsAddModifier(2, getSelectedModuleCredits(2, 0));
-            } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error Dialogue");
-                alert.setHeaderText("Invalid modules");
-                alert.setContentText("Reserve module limit has already been reached.");
-                alert.showAndWait();
-            }
-        }
-    }
-
-    public void removeSelectedModule(){
-        if (getPaneIndex() == 1){
-            if (!getListResTerm1().isEmpty()){
-                if (getTerm1Credits() <= 0 || !(getTerm1Credits()>30)){
-                    getListUnTerm1().add(getSelectedModule(1, 1));
-                    creditsRemoveModifier(1, getSelectedModuleCredits(1, 1));
-                    getListResTerm1().remove(getSelectedModule(1, 1));
-                    System.out.println(term1Credits);
-                } else {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error Dialogue");
-                    alert.setHeaderText("Invalid modules");
-                    alert.setContentText("Cannot remove more modules" + getTerm1Credits());
-                    alert.showAndWait();
-                }
-            }
-        } else {
-            if (!getListResTerm2().isEmpty()){
-                if (getTerm2Credits() <= 0 || !(getTerm2Credits()>30)){
-                    getListUnTerm2().add(getSelectedModule(2, 1));
-                    creditsRemoveModifier(2, getSelectedModuleCredits(2, 1));
-                    getListResTerm2().remove(getSelectedModule(2, 1));
-                    System.out.println(term2Credits);
-                } else {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error Dialogue");
-                    alert.setHeaderText("Invalid modules");
-                    alert.setContentText("Cannot remove more modules" + getTerm2Credits());
-                    alert.showAndWait();
-                }
-            }
-        }
-    }
 
     public void clearReserve(){
         listResTerm1.clear();

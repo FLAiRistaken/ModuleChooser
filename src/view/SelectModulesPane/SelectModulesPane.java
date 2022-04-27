@@ -32,7 +32,6 @@ public class SelectModulesPane extends GridPane {
     private Button btnReset, btnSubmit;
     private Label lblT1Credits, lblT2Credits;
     private TextField txtT1Credits, txtT2Credits;
-    private TextArea txtDebug;
 
     private ObservableList<Module> unModTerm1, unModTerm2, selModYear, selModTerm1, selModTerm2;
 
@@ -60,15 +59,15 @@ public class SelectModulesPane extends GridPane {
         txtT1Credits = new TextField("0");
         txtT1Credits.setEditable(false);
 
-        VBox leftTopVbox = new VBox(unTerm1, btnTerm1);
-        VBox leftBottomVbox = new VBox(unTerm2, btnTerm2);
+      //  VBox leftTopVbox = new VBox(unTerm1, btnTerm1);
+       // VBox leftBottomVbox = new VBox(unTerm2, btnTerm2);
 
-        leftTopVbox.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        leftBottomVbox.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+       // leftTopVbox.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+       // leftBottomVbox.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
 
-        leftTopVbox.setAlignment(Pos.TOP_CENTER);
-        leftBottomVbox.setAlignment(Pos.BOTTOM_CENTER);
+      //  leftTopVbox.setAlignment(Pos.TOP_CENTER);
+      //  leftBottomVbox.setAlignment(Pos.BOTTOM_CENTER);
 
         unTerm1.getLblList().setText("Unselected Term 1 modules");
         unTerm2.getLblList().setText("Unselected Term 2 modules");
@@ -83,7 +82,11 @@ public class SelectModulesPane extends GridPane {
         unTerm2.prefHeightProperty().bind(this.heightProperty());
         txtT1Credits.setPrefSize(60, 20);
 
-        VBox leftVbox = new VBox(leftTopVbox, leftBottomVbox);
+        VBox leftVbox = new VBox(10);
+        leftVbox.getChildren().add(unTerm1);
+        leftVbox.getChildren().add(btnTerm1);
+        leftVbox.getChildren().add(unTerm2);
+        leftVbox.getChildren().add(btnTerm2);
         leftVbox.setAlignment(Pos.CENTER_LEFT);
 
         //Right side
@@ -115,8 +118,6 @@ public class SelectModulesPane extends GridPane {
 
         rightVbox.setAlignment(Pos.CENTER_RIGHT);
 
-        gridLinesVisibleProperty().set(true);
-
         //Bottom
         HBox t1creditsHbox = new HBox(lblT1Credits, txtT1Credits);
         HBox t2creditsHbox = new HBox(lblT2Credits, txtT2Credits);
@@ -140,7 +141,7 @@ public class SelectModulesPane extends GridPane {
         hboxBtnSubmit.setAlignment(Pos.CENTER_LEFT);
         hboxBtnSubmit.setPadding(new Insets(20, 20, 0, 20));
 
-        txtDebug = new TextArea();
+
 
 
         this.add(leftVbox, 0, 1);
@@ -232,10 +233,6 @@ public class SelectModulesPane extends GridPane {
         }
         txtT1Credits.setText(String.valueOf(term1Credits));
         txtT2Credits.setText(String.valueOf(term2Credits));
-    }
-
-    public TextArea getTxtDebug(){
-        return txtDebug;
     }
 
     public TextField getTxtT1Credits(){

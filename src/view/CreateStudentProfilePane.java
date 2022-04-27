@@ -1,5 +1,6 @@
 package view;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 import javafx.event.ActionEvent;
@@ -10,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import model.Course;
 import model.Name;
 import model.StudentProfile;
@@ -25,7 +27,6 @@ public class CreateStudentProfilePane extends GridPane {
 	private DatePicker inputDate;
 	private TextField txtFirstName, txtSurname,  txtPnumber, txtEmail;
 	private Button btnCreateProfile;
-	private TextArea txtDebug;
 
 	public CreateStudentProfilePane() {
 		//styling
@@ -56,7 +57,6 @@ public class CreateStudentProfilePane extends GridPane {
 		txtEmail = new TextField();
 		
 		inputDate = new DatePicker();
-		txtDebug = new TextArea();
 		
 		//initialise create profile button
 		btnCreateProfile = new Button("Create Profile");
@@ -82,7 +82,20 @@ public class CreateStudentProfilePane extends GridPane {
 			
 		this.add(new HBox(), 0, 6);
 		this.add(btnCreateProfile, 1, 6);
-		this.add(txtDebug, 1, 7);
+
+		/*
+		GridPane.setHgrow(cboCourses, Priority.ALWAYS);
+		GridPane.setHgrow(txtPnumber, Priority.ALWAYS);
+		GridPane.setHgrow(txtFirstName, Priority.ALWAYS);
+		GridPane.setHgrow(txtSurname, Priority.ALWAYS);
+		GridPane.setHgrow(txtEmail, Priority.ALWAYS);
+
+		cboCourses.setMaxWidth(500);
+		txtPnumber.setMaxWidth(500);
+		txtFirstName.setMaxWidth(500);
+		txtSurname.setMaxWidth(500);
+		txtEmail.setMaxWidth(500);
+		 */
 	}
 	
 	//method to allow the controller to add courses to the combobox
@@ -206,11 +219,5 @@ public class CreateStudentProfilePane extends GridPane {
 	public void addCreateStudentProfileHandler(EventHandler<ActionEvent> handler) {
 		btnCreateProfile.setOnAction(handler);
 	}
-
-	public TextArea getTxtDebug(){
-		return txtDebug;
-	}
-
-
 
 }

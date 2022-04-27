@@ -4,6 +4,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class ListViewPane<Module> extends VBox {
@@ -20,6 +21,7 @@ public class ListViewPane<Module> extends VBox {
         listViewBox.setPrefSize(300, 200);
 
         this.getChildren().addAll(lblList, listViewBox);
+        VBox.setVgrow(listViewBox, Priority.ALWAYS);
     }
 
     public Label getLblList(){
