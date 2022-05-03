@@ -3,7 +3,6 @@ package controller;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import model.Course;
 import model.Schedule;
 import model.Module;
@@ -16,7 +15,7 @@ import view.SelectModulesPane.SelectModulesPane;
 import view.OverviewPane.OverviewPane;
 
 import java.io.*;
-import java.sql.Array;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -89,7 +88,7 @@ public class ModuleChooserController {
 			int term1Creds = 0;
 			int term2Creds = 0;
 
-			if (!cspp.validFields()){
+			if (!validFields()){
 
 			} else {
 				model = cspp.getStudentProfile();
@@ -128,6 +127,44 @@ public class ModuleChooserController {
 				view.changeTab(1);
 			}
 		}
+	}
+
+	private boolean validFields(){
+		String errors = "";
+		if (cspp.emptyFields()){
+			alertDialogBuilder(Alert.AlertType.ERROR, "Error", "Validation failed", "Please ensure no fields are left empty!");
+			return false;
+		}
+		if(!(cspp.getStudentPnumber().startsWith("P")) || !(cspp.getStudentPnumber().substring(1).matches("[0-9]+")) || (cspp.getStudentPnumber().length()) > 10){
+			errors += "- P number must start with a P with numbers following and be no greater than 10 characters in length.\n";
+		}
+
+		if((cspp.getStudentName().getFirstName().length() < 2) || (cspp.getStudentName().getFirstName().length() > 25)){
+			errors += "- Firstname cannot be shorter than 2 characters or greater than 25 characters.\n";
+		}
+
+		if ((cspp.getStudentName().getFamilyName().length() < 2) || (cspp.getStudentName().getFamilyName().length() > 25)){
+			errors += "- Surname cannot be shorter than 2 characters or greater than 25 chcracters.\n";
+		}
+
+		if (!(cspp.getStudentEmail().contains("@")) || !(cspp.getStudentEmail().contains("."))){
+			errors += "- Email is not valid.\n";
+		}
+
+		if (cspp.getStudentDate().isBefore(LocalDate.now()) || cspp.getStudentDate().isAfter(LocalDate.now())){
+			errors += "- Selected date must be today's date.\n";
+		}
+
+
+		if (!errors.isEmpty()){
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setHeaderText("Validation Failed");
+			alert.setContentText(errors);
+			alert.showAndWait();
+			return false;
+		}
+		return true;
 	}
 
 
@@ -318,7 +355,7 @@ public class ModuleChooserController {
 
 	private class addReserveModuleHandler implements EventHandler<ActionEvent>  {
 		public void handle(ActionEvent e) {
-			//rp.addSelectedModule();
+
 			if (rp.getPaneIndex() == 1){
 				if (rp.getTerm1Credits()> 0){
 					rp.getListResTerm1().add(rp.getSelectedModule(1, 0));
@@ -354,7 +391,7 @@ public class ModuleChooserController {
 			} else {
 				model.removeSelectedReserveModule(rp.getSelectedModule(2, 1));
 			}
-			//rp.removeSelectedModule();
+
 			if (rp.getPaneIndex() == 1){
 				if (!rp.getListResTerm1().isEmpty()){
 					if (rp.getTerm1Credits() <= 0 || !(rp.getTerm1Credits()>30)){
@@ -440,7 +477,6 @@ public class ModuleChooserController {
 
 				oos.writeObject(model);
 				oos.flush();
-				//oos.close();
 
 				alertDialogBuilder(Alert.AlertType.INFORMATION, "Information Dialog", "Save successful!", "Student profile saved to studentProfile.dat");
 			}

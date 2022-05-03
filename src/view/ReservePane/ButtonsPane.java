@@ -19,7 +19,6 @@ public class ButtonsPane extends HBox {
         remove = new Button("Remove");
         confirm = new Button("Confirm");
 
-        //confirm.setDisable(true);
         add.setPrefSize(70, 20);
         remove.setPrefSize(70, 20);
         confirm.setPrefSize(70, 20);
@@ -27,9 +26,6 @@ public class ButtonsPane extends HBox {
 
         this.getChildren().addAll(lblButton, add, remove, confirm);
 
-       /* for (Node n : this.getChildren()) {
-            ((Button) n).setPrefSize(70, 20);
-        }*/
     }
 
     public Label getLblButton() {
