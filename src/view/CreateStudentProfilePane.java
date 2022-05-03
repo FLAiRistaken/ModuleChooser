@@ -127,48 +127,9 @@ public class CreateStudentProfilePane extends GridPane {
 		return studentP;
 	}
 
-	public boolean validFields(){
-		String errors = "";
-
-		if(!(getStudentPnumber().startsWith("P")) || !(getStudentPnumber().substring(1).matches("[0-9]+")) || (getStudentPnumber().length()) > 10){
-			errors += "- P number must start with a P with numbers following and be no greater than 10 characters in length.\n";
-		}
-
-		if((txtFirstName.getText().length() < 2) || (txtFirstName.getText().length() > 25)){
-			errors += "- Firstname cannot be shorter than 2 characters or greater than 25 characters.\n";
-		}
-
-		if ((txtSurname.getText().length() < 2) || (txtSurname.getText().length() > 25)){
-			errors += "- Surname cannot be shorter than 2 characters or greater than 25 chcracters.\n";
-		}
-
-		if (!(getStudentEmail().contains("@")) || !(getStudentEmail().contains("."))){
-			errors += "- Email is not valid.\n";
-		}
-
-		if (getStudentDate().isBefore(LocalDate.now()) || getStudentDate().isAfter(LocalDate.now())){
-			errors += "- Selected date must be today's date.\n";
-		}
-
-
-		if (!errors.isEmpty()){
-			Alert alert = new Alert(Alert.AlertType.ERROR);
-			alert.setTitle("Error");
-			alert.setHeaderText("Validation Failed");
-			alert.setContentText(errors);
-			alert.showAndWait();
-			return false;
-		}
-		return true;
-	}
-
 	public boolean emptyFields(){
-		if (txtFirstName.getText().isEmpty() || txtSurname.getText().isEmpty() || txtPnumber.getText().isEmpty() ||
-			txtEmail.getText().isEmpty() || inputDate.getValue().toString().isEmpty()){
-			return true;
-		} else {
-			return false;
-		}
+		return txtFirstName.getText().isEmpty() || txtSurname.getText().isEmpty() || txtPnumber.getText().isEmpty() ||
+				txtEmail.getText().isEmpty() || inputDate.getValue().toString().isEmpty();
 	}
 
 	public void clearStudentProfilePane() {
@@ -177,7 +138,7 @@ public class CreateStudentProfilePane extends GridPane {
 		txtPnumber.clear();
 		txtEmail.clear();
 		inputDate.setValue(null);
-		cboCourses.getSelectionModel().clearSelection();
+		cboCourses.getSelectionModel().select(0);
 	}
 
 	public void loadProfile(StudentProfile loadedProfile){
@@ -187,8 +148,11 @@ public class CreateStudentProfilePane extends GridPane {
 		String sname = loadedProfile.getStudentName().getFamilyName();
 		String email = loadedProfile.getStudentEmail();
 		LocalDate date = loadedProfile.getSubmissionDate();
-
-		cboCourses.getSelectionModel().select(course);
+		if (course.getCourseName().contains("Computer Science")){
+			cboCourses.getSelectionModel().select(0);
+		} else {
+			cboCourses.getSelectionModel().select(1);
+		}
 		txtFirstName.setText(fname);
 		txtSurname.setText(sname);
 		txtPnumber.setText(pnum);
