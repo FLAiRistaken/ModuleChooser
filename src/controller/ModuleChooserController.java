@@ -36,6 +36,7 @@ public class ModuleChooserController {
 		//initialise view and model fields
 		this.view = view;
 		this.model = model;
+
 		
 		//initialise view subcontainer fields
 		cspp = view.getCreateStudentProfilePane();
@@ -43,6 +44,7 @@ public class ModuleChooserController {
 		ovp = view.getOverviewPane();
 		smp = view.getSelectModulesPane();
 		rp = view.getReservePane();
+
 
 
 		//add courses to combobox in create student profile pane using the generateAndGetCourses helper method below
@@ -157,11 +159,7 @@ public class ModuleChooserController {
 
 
 		if (!errors.isEmpty()){
-			Alert alert = new Alert(Alert.AlertType.ERROR);
-			alert.setTitle("Error");
-			alert.setHeaderText("Validation Failed");
-			alert.setContentText(errors);
-			alert.showAndWait();
+			alertDialogBuilder(Alert.AlertType.ERROR, "Error dialogue", "Validation failed :(", errors);
 			return false;
 		}
 		return true;
@@ -226,22 +224,33 @@ public class ModuleChooserController {
 			s = s.substring(s.indexOf("=")+ 1);
 			s = s.substring(0, s.indexOf(","));
 			if (s.equals("term1Add")){
-				if (smp.getTerm1Credits() < 60){
-					smp.setTerm1Credits(smp.getTerm1Credits() + smp.getUnTerm1SelectedModule().getModuleCredits());
-					smp.getSelModTerm1Contents().add(smp.getUnTerm1SelectedModule());
-					smp.getUnModTerm1Contents().remove(smp.getUnTerm1SelectedModule());
+				if (!(smp.getUnTerm1SelectedModule() == null)){
+					if (smp.getTerm1Credits() < 60){
+						smp.setTerm1Credits(smp.getTerm1Credits() + smp.getUnTerm1SelectedModule().getModuleCredits());
+						smp.getSelModTerm1Contents().add(smp.getUnTerm1SelectedModule());
+						smp.getUnModTerm1Contents().remove(smp.getUnTerm1SelectedModule());
+					} else {
+						alertDialogBuilder(Alert.AlertType.ERROR, "Error Dialogue",
+								"Invalid modules", "Module limit for term 1 has been reached");
+					}
 				} else {
 					alertDialogBuilder(Alert.AlertType.ERROR, "Error Dialogue",
-							"Invalid modules", "Module limit for term 1 has been reached");
+							"Invalid modules", "Selected module is null.");
 				}
+
 			} else if (s.equals("term2Add")) {
-				if (smp.getTerm2Credits() < 60){
-					smp.setTerm2Credits(smp.getTerm2Credits() + smp.getUnTerm2SelectedModule().getModuleCredits());
-					smp.getSelModTerm2Contents().add(smp.getUnTerm2SelectedModule());
-					smp.getUnModTerm2Contents().remove(smp.getUnTerm2SelectedModule());
+				if (!(smp.getUnTerm2SelectedModule() == null)){
+					if (smp.getTerm2Credits() < 60){
+						smp.setTerm2Credits(smp.getTerm2Credits() + smp.getUnTerm2SelectedModule().getModuleCredits());
+						smp.getSelModTerm2Contents().add(smp.getUnTerm2SelectedModule());
+						smp.getUnModTerm2Contents().remove(smp.getUnTerm2SelectedModule());
+					} else {
+						alertDialogBuilder(Alert.AlertType.ERROR, "Error Dialogue",
+								"Invalid modules", "Module limit for term 2 has been reached");
+					}
 				} else {
 					alertDialogBuilder(Alert.AlertType.ERROR, "Error Dialogue",
-							"Invalid modules", "Module limit for term 2 has been reached");
+							"Invalid modules", "Selected module is null.");
 				}
 			}
 		}
