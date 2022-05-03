@@ -261,7 +261,6 @@ public class ModuleChooserController {
 			String s = e.getSource().toString();
 			s = s.substring(s.indexOf("=")+ 1);
 			s = s.substring(0, s.indexOf(","));
-			System.out.println(s);
 			if (s.equals("term1Rem")){
 				if (!(smp.getSelTerm1SelectedModule() == null)){
 					if (!smp.getSelTerm1SelectedModule().isMandatory()){
@@ -309,8 +308,6 @@ public class ModuleChooserController {
 		public void handle(ActionEvent e){
 			smp.clearSMP();
 			model.clearReservedModules();
-			System.out.println(model.getStudentCourse().getAllModulesOnCourse());
-			System.out.println(model.getAllSelectedModules());
 			for (Module m : model.getStudentCourse().getAllModulesOnCourse()){
 				if (m.getDelivery().equals(Schedule.TERM_1)){
 					if(m.isMandatory() == false){
@@ -338,26 +335,32 @@ public class ModuleChooserController {
 
 	private class submitSelectModuleHandler implements  EventHandler<ActionEvent>{
 		public void handle(ActionEvent e){
-			rp.clearUnReserve();
-			rp.clearReserve();
-			rp.clearReservePaneCredits();
-			for (Module m : smp.getSelModYearContents()){
-				model.addSelectedModule(m);
+			if (smp.getTerm1Credits() == 60 && smp.getTerm2Credits() == 60){
+				rp.clearUnReserve();
+				rp.clearReserve();
+				rp.clearReservePaneCredits();
+				for (Module m : smp.getSelModYearContents()){
+					model.addSelectedModule(m);
+				}
+				for (Module m : smp.getSelModTerm1Contents()){
+					model.addSelectedModule(m);
+				}
+				for (Module m : smp.getSelModTerm2Contents()){
+					model.addSelectedModule(m);
+				}
+				for (Module m : smp.getUnModTerm1Contents()){
+					rp.getListUnTerm1().add(m);
+				}
+				for (Module m : smp.getUnModTerm2Contents()){
+					rp.getListUnTerm2().add(m);
+				}
+				ovp.setSelectedModuleData(model);
+				view.changeTab(2);
+			} else {
+				alertDialogBuilder(Alert.AlertType.ERROR, "Error", "Invalid number of modules :(",
+						"Not enough modules have been selected");
 			}
-			for (Module m : smp.getSelModTerm1Contents()){
-				model.addSelectedModule(m);
-			}
-			for (Module m : smp.getSelModTerm2Contents()){
-				model.addSelectedModule(m);
-			}
-			for (Module m : smp.getUnModTerm1Contents()){
-				rp.getListUnTerm1().add(m);
-			}
-			for (Module m : smp.getUnModTerm2Contents()){
-				rp.getListUnTerm2().add(m);
-			}
-			ovp.setSelectedModuleData(model);
-			view.changeTab(2);
+
 		}
 	}
 
@@ -366,28 +369,32 @@ public class ModuleChooserController {
 		public void handle(ActionEvent e) {
 
 			if (rp.getPaneIndex() == 1){
-				if (rp.getTerm1Credits()> 0){
-					rp.getListResTerm1().add(rp.getSelectedModule(1, 0));
-					rp.getListUnTerm1().remove(rp.getSelectedModule(1, 0));
-					rp.creditsAddModifier(1, rp.getSelectedModuleCredits(1, 0));
+				if (rp.getSelectedModule(1, 0) == null){
+					alertDialogBuilder(Alert.AlertType.ERROR, "Error", "Invalid selection :(",
+							"Selection is null, please select a module.");
 				} else {
-					Alert alert = new Alert(Alert.AlertType.ERROR);
-					alert.setTitle("Error Dialogue");
-					alert.setHeaderText("Invalid modules");
-					alert.setContentText("Reserve module limit has already been reached.");
-					alert.showAndWait();
+					if (rp.getTerm1Credits()> 0){
+						rp.getListResTerm1().add(rp.getSelectedModule(1, 0));
+						rp.getListUnTerm1().remove(rp.getSelectedModule(1, 0));
+						rp.creditsAddModifier(1, rp.getSelectedModuleCredits(1, 0));
+					} else {
+						alertDialogBuilder(Alert.AlertType.ERROR, "Error Dialogue", "Invalid modules",
+								"Reserve module limit has already been reached.");
+					}
 				}
 			} else {
-				if (rp.getTerm2Credits()> 0){
-					rp.getListResTerm2().add(rp.getSelectedModule(2, 0));
-					rp.getListUnTerm2().remove(rp.getSelectedModule(2, 0));
-					rp.creditsAddModifier(2, rp.getSelectedModuleCredits(2, 0));
+				if (rp.getSelectedModule(2, 0) == null){
+					alertDialogBuilder(Alert.AlertType.ERROR, "Error", "Invalid selection :(",
+							"Selection is null, please select a module.");
 				} else {
-					Alert alert = new Alert(Alert.AlertType.ERROR);
-					alert.setTitle("Error Dialogue");
-					alert.setHeaderText("Invalid modules");
-					alert.setContentText("Reserve module limit has already been reached.");
-					alert.showAndWait();
+					if (rp.getTerm2Credits()> 0){
+						rp.getListResTerm2().add(rp.getSelectedModule(2, 0));
+						rp.getListUnTerm2().remove(rp.getSelectedModule(2, 0));
+						rp.creditsAddModifier(2, rp.getSelectedModuleCredits(2, 0));
+					} else {
+						alertDialogBuilder(Alert.AlertType.ERROR, "Error Dialogue", "Invalid modules",
+								"Reserve module limit has already been reached.");
+					}
 				}
 			}
 		}
@@ -396,9 +403,22 @@ public class ModuleChooserController {
 	private class removeReserveModuleHandler implements EventHandler<ActionEvent> {
 		public void handle(ActionEvent e) {
 			if (rp.getPaneIndex() == 1){
-				model.removeSelectedReserveModule(rp.getSelectedModule(1, 1));
+				if (!(rp.getSelectedModule(1, 1) == null)){
+					model.removeSelectedReserveModule(rp.getSelectedModule(1, 1));
+				} else {
+					alertDialogBuilder(Alert.AlertType.ERROR, "Error", "Invalid selection :(",
+							"Selection is null, please select a module.");
+					return;
+				}
 			} else {
-				model.removeSelectedReserveModule(rp.getSelectedModule(2, 1));
+				if (!(rp.getSelectedModule(2, 1) == null)){
+					model.removeSelectedReserveModule(rp.getSelectedModule(2, 1));
+				} else {
+					alertDialogBuilder(Alert.AlertType.ERROR, "Error", "Invalid selection :(",
+							"Selection is null, please select a module.");
+					return;
+				}
+
 			}
 
 			if (rp.getPaneIndex() == 1){
@@ -436,20 +456,31 @@ public class ModuleChooserController {
 	private class confirmReserveModuleHandler implements EventHandler<ActionEvent>{
 		public void handle(ActionEvent e) {
 			if (rp.getPaneIndex() == 1){
-				for (Module m : rp.getSelectedReserveModules(1)){
-					model.addReservedModule(m);
-					rp.changePane(2);
+				if (!(rp.getTerm1Credits() > 0)){
+					for (Module m : rp.getSelectedReserveModules(1)){
+						model.addReservedModule(m);
+						rp.changePane(2);
+					}
+				} else {
+					alertDialogBuilder(Alert.AlertType.ERROR, "Error", "Invalid number of modules :(",
+							"Not enough reserve modules have been selected");
 				}
 			} else {
-				for (Module m : rp.getSelectedReserveModules(2)) {
-					model.addReservedModule(m);
-					ovp.clearReserve();
-					ovp.setReserveModuleData(model);
-					view.changeTab(3);
+				if (!(rp.getTerm2Credits() > 0)){
+					for (Module m : rp.getSelectedReserveModules(2)) {
+						model.addReservedModule(m);
+						ovp.clearReserve();
+						ovp.setReserveModuleData(model);
+						view.changeTab(3);
+					}
+				} else {
+					alertDialogBuilder(Alert.AlertType.ERROR, "Error", "Invalid number of modules :(",
+							"Not enough reserve modules have been selected");
 				}
 			}
 		}
 	}
+
 
 	private class saveOverviewHandler implements EventHandler<ActionEvent>{
 		public void handle(ActionEvent e) {
