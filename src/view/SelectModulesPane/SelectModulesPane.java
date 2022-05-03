@@ -4,24 +4,18 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import model.Course;
 import model.Module;
 import model.Schedule;
 import model.StudentProfile;
 
-import javax.security.auth.callback.LanguageCallback;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -44,8 +38,8 @@ public class SelectModulesPane extends GridPane {
         unModTerm1 = FXCollections.observableArrayList();
         unModTerm2 = FXCollections.observableArrayList();
 
-        unTerm1 = new ListViewPane(unModTerm1);
-        unTerm2 = new ListViewPane(unModTerm2);
+        unTerm1 = new ListViewPane<>(unModTerm1);
+        unTerm2 = new ListViewPane<>(unModTerm2);
         unTerm1.getListView().getSelectionModel();
 
         btnTerm1 = new ButtonsPane();
@@ -85,9 +79,9 @@ public class SelectModulesPane extends GridPane {
         selModTerm1 = FXCollections.observableArrayList();
         selModTerm2 = FXCollections.observableArrayList();
 
-        selYear = new ListViewPane(selModYear);
-        selTerm1 = new ListViewPane(selModTerm1);
-        selTerm2 = new ListViewPane(selModTerm2);
+        selYear = new ListViewPane<>(selModYear);
+        selTerm1 = new ListViewPane<>(selModTerm1);
+        selTerm2 = new ListViewPane<>(selModTerm2);
         lblT2Credits = new Label("Current term 2 credits: ");
         txtT2Credits = new TextField("0");
         txtT2Credits.setEditable(false);
@@ -182,7 +176,6 @@ public class SelectModulesPane extends GridPane {
 
     public void loadModules(StudentProfile profile){
         Collection<Module> allCourseModule = new ArrayList<Module>(profile.getStudentCourse().getAllModulesOnCourse());
-        System.out.println(profile);
         if (!profile.getAllSelectedModules().isEmpty()){
             for (Module m : profile.getAllSelectedModules()){
                 if (m.getDelivery().equals(Schedule.TERM_1)){
