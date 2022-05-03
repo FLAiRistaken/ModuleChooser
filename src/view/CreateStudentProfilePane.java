@@ -11,15 +11,10 @@ import javafx.scene.control.*;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import model.Course;
 import model.Name;
 import model.StudentProfile;
-import org.w3c.dom.Text;
 
-import java.util.Date;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
 
 public class CreateStudentProfilePane extends GridPane {
 
@@ -83,19 +78,6 @@ public class CreateStudentProfilePane extends GridPane {
 		this.add(new HBox(), 0, 6);
 		this.add(btnCreateProfile, 1, 6);
 
-		/*
-		GridPane.setHgrow(cboCourses, Priority.ALWAYS);
-		GridPane.setHgrow(txtPnumber, Priority.ALWAYS);
-		GridPane.setHgrow(txtFirstName, Priority.ALWAYS);
-		GridPane.setHgrow(txtSurname, Priority.ALWAYS);
-		GridPane.setHgrow(txtEmail, Priority.ALWAYS);
-
-		cboCourses.setMaxWidth(500);
-		txtPnumber.setMaxWidth(500);
-		txtFirstName.setMaxWidth(500);
-		txtSurname.setMaxWidth(500);
-		txtEmail.setMaxWidth(500);
-		 */
 	}
 	
 	//method to allow the controller to add courses to the combobox
@@ -148,8 +130,8 @@ public class CreateStudentProfilePane extends GridPane {
 	public boolean validFields(){
 		String errors = "";
 
-		if(!(getStudentPnumber().startsWith("P")) || (getStudentPnumber().length()) > 10){
-			errors += "- P number must start with a P and be no greater than 10 characters in length.\n";
+		if(!(getStudentPnumber().startsWith("P")) || !(getStudentPnumber().substring(1).matches("[0-9]+")) || (getStudentPnumber().length()) > 10){
+			errors += "- P number must start with a P with numbers following and be no greater than 10 characters in length.\n";
 		}
 
 		if((txtFirstName.getText().length() < 2) || (txtFirstName.getText().length() > 25)){
@@ -160,13 +142,13 @@ public class CreateStudentProfilePane extends GridPane {
 			errors += "- Surname cannot be shorter than 2 characters or greater than 25 chcracters.\n";
 		}
 
-		if (!isValidEmail(getStudentEmail())){
+		if (!(getStudentEmail().contains("@")) || !(getStudentEmail().contains("."))){
 			errors += "- Email is not valid.\n";
 		}
 
-	/*	if (getStudentDate().isBefore(java.time.LocalDate.now())){
+		if (getStudentDate().isBefore(LocalDate.now()) || getStudentDate().isAfter(LocalDate.now())){
 			errors += "- Selected date must be today's date.\n";
-		}*/
+		}
 
 
 		if (!errors.isEmpty()){
@@ -180,12 +162,13 @@ public class CreateStudentProfilePane extends GridPane {
 		return true;
 	}
 
-	public boolean isValidEmail(String email){
-		String emailPattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$"; //regex pattern obtained from https://www.baeldung.com/java-email-validation-regex
-		Pattern pattern = Pattern.compile(emailPattern);
-		Matcher matcher = pattern.matcher(email);
-
-		return matcher.matches();
+	public boolean emptyFields(){
+		if (txtFirstName.getText().isEmpty() || txtSurname.getText().isEmpty() || txtPnumber.getText().isEmpty() ||
+			txtEmail.getText().isEmpty() || inputDate.getValue().toString().isEmpty()){
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public void clearStudentProfilePane() {

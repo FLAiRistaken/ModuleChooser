@@ -19,9 +19,6 @@ public class ButtonsPane extends HBox {
         add = new Button("Add");
         remove = new Button("Remove");
 
-
-       // add.setDisable(true);
-       // submit.setDisable(true);
         add.setPrefSize(70, 20);
         remove.setPrefSize(70, 20);
 

@@ -59,15 +59,6 @@ public class SelectModulesPane extends GridPane {
         txtT1Credits = new TextField("0");
         txtT1Credits.setEditable(false);
 
-      //  VBox leftTopVbox = new VBox(unTerm1, btnTerm1);
-       // VBox leftBottomVbox = new VBox(unTerm2, btnTerm2);
-
-       // leftTopVbox.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-       // leftBottomVbox.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-
-
-      //  leftTopVbox.setAlignment(Pos.TOP_CENTER);
-      //  leftBottomVbox.setAlignment(Pos.BOTTOM_CENTER);
 
         unTerm1.getLblList().setText("Unselected Term 1 modules");
         unTerm2.getLblList().setText("Unselected Term 2 modules");
