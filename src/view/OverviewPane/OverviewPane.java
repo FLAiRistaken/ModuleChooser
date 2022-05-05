@@ -99,8 +99,8 @@ public class OverviewPane extends GridPane {
             var modCredit = m.getModuleCredits();
             String modTerm = String.valueOf(m.getDelivery());
 
-            data += "Module code: " + modCode + ", Module name: " + modName + ", \nModule credits: " + modCredit +
-                    ", Delivery: " + modTerm + "\n\n";
+            data += "Module code: " + modCode + "\n" + "Module name: " + modName + "\n" + "Module credits: " + modCredit +
+                    "\n" + "Delivery: " + modTerm + "\n\n";
         }
         selected.setText(data);
     }
@@ -114,8 +114,8 @@ public class OverviewPane extends GridPane {
             var modCredit = m.getModuleCredits();
             String modTerm = String.valueOf(m.getDelivery());
 
-            data += "Module code: " + modCode + ", Module name: " + modName + ", \nModule credits: " + modCredit +
-                    ", Delivery: " + modTerm + "\n\n";
+            data += "Module code: " + modCode + "\n" + "Module name: " + modName + "\n" + "Module credits: " + modCredit +
+                    "\n" + "Delivery: " + modTerm + "\n\n";
         }
         reserve.setText(data);
     }
